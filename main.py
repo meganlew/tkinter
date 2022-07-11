@@ -111,58 +111,97 @@ def submit():
     fault_rupture.set("")
     seismic_moment.set("")
 
+    dSig = 3.0 * 1.0e6
+    kBrune = 0.38
+    Vs = 3000.0
+    # != not empty , == is empty
+    # if (notEmpty(MW) & notEmpty(M0)
+    if earthquake != 0.0 and seismic != 0.0:
+        # earthquake magnitude to seismic moment
+        Mw = 10.0 ** (1.5 * earthquake + 9.05)
+        print("Ignoring user input from M0, calculating M0 from MW")
+        print("MwtoM0: " + str(Mw))
+        # earthquake magnitude to corner frequency
+        print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / Mw), (1.0 / 3.0))))
+        # earthquake magnitude to fault width
+        print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * earthquake)))
+        # earthquake magnitude to fault length
+        print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * earthquake)))
+        # magnitude to area of fault path that slipped
+        print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * earthquake)))
+    # elif (notEmpty(MW) & isEmpty (M0))
+    elif earthquake != 0.0 and seismic == 0.0:
+        Mw = 10.0 ** (1.5 * earthquake + 9.05)
+        print("MwtoM0: " + str(Mw))
+        # earthquake magnitude to corner frequency
+        print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / Mw), (1.0 / 3.0))))
+        # earthquake magnitude to fault width
+        print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * earthquake)))
+        # earthquake magnitude to fault length
+        print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * earthquake)))
+        # magnitude to area of fault path that slipped
+        print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * earthquake)))
+    # elif (isEmpty(MW) & notEmpty(M0))
+    elif earthquake == 0.0 and seismic != 0.0:
+        M0 = (np.log10(seismic) - 9.05) / 1.5
+        print("M0toMw: " + str(M0))
+        # earthquake magnitude to corner frequency
+        print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / seismic), (1.0 / 3.0))))
+    else:
+        print("Error, no magnitude information given.")
+
     # Mw = 10.0 ** (1.5 * earthquake + 9.05)
     # print("MwtoM0: " + str(Mw))
 
     # def MwtoM0(Mw):
        #  return 10.0 ** (1.5 * Mw + 9.05)
 
-    def MwtoM0():
-        # earthquake magnitude to seismic moment
-        Mw = 10.0 ** (1.5 * earthquake + 9.05)
-        print("MwtoM0: " + str(Mw))
-    MwtoM0()
+    # def MwtoM0():
+    #     # earthquake magnitude to seismic moment
+    #     Mw = 10.0 ** (1.5 * earthquake + 9.05)
+    #     print("MwtoM0: " + str(Mw))
+    # MwtoM0()
 
     #def M0toMw(M0):
        # return (np.log10(M0) - 9.05) / 1.5;
 
-    def M0toMw():
-        # seismic moment to earthquake magnitude
-        M0 = (np.log10(seismic) - 9.05) / 1.5;
-        print("M0toMw: " + str(M0))
-    M0toMw()
-
-    # def M0tofc(M0, dSig=3.0 * 1.0e6, kBrune=0.38, Vs=3000.0):
-       # return kBrune * Vs * np.power(((16.0 / 7.0) * dSig / M0), (1.0 / 3.0))
-
-    def M0tofc(dSig=3.0 * 1.0e6, kBrune=0.38, Vs=3000.0):
-        # earthquake magnitude to corner frequency
-        print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / seismic), (1.0 / 3.0))))
-    M0tofc()
-
-    # def MwtoRW(Mw, author='wellscoppersmith', faulttype='All'):
-    # return 10.0 ** (-1.01 + 0.32 * Mw)
-
-    def MwtoRW(author='wellscoppersmith', faulttype='All'):
-        # magnitude to fault width
-        print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * earthquake)))
-    MwtoRW()
-
-    # def MwtoRLD(Mw, author='wellscoppersmith', faulttype='All'):
-    # return 10.0 ** (-2.44 + 0.59 * Mw)
-
-    def MwtoRLD(author='wellscoppersmith', faulttype='All'):
-        # magnitude to fault length
-        print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * earthquake)))
-    MwtoRLD()
-
-    # def MwtoRA(Mw, author='wellscoppersmith', faulttype='All'):
-    # return 10.0 ** (-3.49 + 0.91 * Mw)
-
-    def MwtoRA(author='wellscoppersmith', faulttype='All'):
-        # magnitude to area of fault path that slipped
-        print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * earthquake)))
-    MwtoRA()
+    # def M0toMw():
+    #     # seismic moment to earthquake magnitude
+    #     M0 = (np.log10(seismic) - 9.05) / 1.5;
+    #     print("M0toMw: " + str(M0))
+    # M0toMw()
+    #
+    # # def M0tofc(M0, dSig=3.0 * 1.0e6, kBrune=0.38, Vs=3000.0):
+    #    # return kBrune * Vs * np.power(((16.0 / 7.0) * dSig / M0), (1.0 / 3.0))
+    #
+    # def M0tofc(dSig=3.0 * 1.0e6, kBrune=0.38, Vs=3000.0):
+    #     # earthquake magnitude to corner frequency
+    #     print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / seismic), (1.0 / 3.0))))
+    # M0tofc()
+    #
+    # # def MwtoRW(Mw, author='wellscoppersmith', faulttype='All'):
+    # # return 10.0 ** (-1.01 + 0.32 * Mw)
+    #
+    # def MwtoRW(author='wellscoppersmith', faulttype='All'):
+    #     # magnitude to fault width
+    #     print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * earthquake)))
+    # MwtoRW()
+    #
+    # # def MwtoRLD(Mw, author='wellscoppersmith', faulttype='All'):
+    # # return 10.0 ** (-2.44 + 0.59 * Mw)
+    #
+    # def MwtoRLD(author='wellscoppersmith', faulttype='All'):
+    #     # magnitude to fault length
+    #     print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * earthquake)))
+    # MwtoRLD()
+    #
+    # # def MwtoRA(Mw, author='wellscoppersmith', faulttype='All'):
+    # # return 10.0 ** (-3.49 + 0.91 * Mw)
+    #
+    # def MwtoRA(author='wellscoppersmith', faulttype='All'):
+    #     # magnitude to area of fault path that slipped
+    #     print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * earthquake)))
+    # MwtoRA()
 
 
 # label, entry, menu ( first column )
