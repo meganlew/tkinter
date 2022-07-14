@@ -4,6 +4,7 @@
 ```shell
 pip install numpy
 pip install tkmacosx
+pip install matplotlib
 ```
 
 <img src="https://user-images.githubusercontent.com/40639118/178615523-b6d354b9-29a0-431b-8346-e7f4cebd8a98.png" width="800" height="600" />
