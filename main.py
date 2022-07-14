@@ -1,6 +1,7 @@
 import tkinter as tk
 import numpy as np
 import tkmacosx as tkm
+import matplotlib.pyplot as plt
 
 #  Fault Rupture Type, Dropdown menu options
 RuptureList = [
@@ -32,6 +33,9 @@ root.title("Rupture Generator")
 # setting the windows size
 root.geometry("900x400")
 
+# quit button
+quit_button = tkm.Button(root, text='Quit', fg='white', background='#E4683C', command=root.quit)
+
 # variables in the first column
 scenario_name = tk.StringVar()  # scenario name (str)
 earthquake_mag = tk.DoubleVar()  # earthquake magnitude (float)
@@ -54,11 +58,15 @@ hypocenter_y = tk.DoubleVar()  # hypocenter location, y (float)
 hypocenter_z = tk.DoubleVar()  # hypocenter location, z (float)
 rupture_velocity = tk.DoubleVar()  # rupture velocity(m/s) (float)
 source_time = tk.StringVar()  # source time function (menu)
+boolean1 = tk.BooleanVar()
+boolean2 = tk.BooleanVar()
 
 # set default as first index in the list
 fault_rupture.set(RuptureList[0])
 rupture_area.set(ShapeList[0])
 source_time.set(SourceList[0])
+
+
 
 # defining a function that will
 # print them on the screen when button is clicked
@@ -85,6 +93,8 @@ def submit():
     location_z = hypocenter_z.get()
     velocity = rupture_velocity.get()
     time = source_time.get()
+    bool1 = boolean1.get()
+    bool2 = boolean2.get()
 
     print("Scenario Name: " + scenario)
     print("Earthquake Magnitude: " + str(earthquake))
@@ -107,45 +117,46 @@ def submit():
     print("Source Time Function: " + time)
 
     scenario_name.set("")
-    earthquake_mag.set("")
+    earthquake_mag.set(1.2)
     fault_rupture.set("")
-    seismic_moment.set("")
+    seismic_moment.set(1.2)
 
     dSig = 3.0 * 1.0e6
     kBrune = 0.38
     Vs = 3000.0
     # != not empty , == is empty
     # if (notEmpty(MW) & notEmpty(M0)
+
     if earthquake != 0.0 and seismic != 0.0:
         # earthquake magnitude to seismic moment
-        Mw = 10.0 ** (1.5 * earthquake + 9.05)
+        MwtoM0 = 10.0 ** (1.5 * earthquake + 9.05)
         print("Ignoring user input from M0, calculating M0 from MW")
-        print("MwtoM0: " + str(Mw))
+        print("MwtoM0: " + str(MwtoM0))
         # earthquake magnitude to corner frequency
-        print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / Mw), (1.0 / 3.0))))
+        print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / MwtoM0), (1.0 / 3.0))))
         # earthquake magnitude to fault width
         print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * earthquake)))
         # earthquake magnitude to fault length
         print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * earthquake)))
         # magnitude to area of fault path that slipped
         print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * earthquake)))
-    # elif (notEmpty(MW) & isEmpty (M0))
+        # elif (notEmpty(MW) & isEmpty (M0))
     elif earthquake != 0.0 and seismic == 0.0:
-        Mw = 10.0 ** (1.5 * earthquake + 9.05)
-        print("MwtoM0: " + str(Mw))
+        MwtoM0 = 10.0 ** (1.5 * earthquake + 9.05)
+        print("MwtoM0: " + str(MwtoM0))
         # earthquake magnitude to corner frequency
-        print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / Mw), (1.0 / 3.0))))
+        print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / MwtoM0), (1.0 / 3.0))))
         # earthquake magnitude to fault width
         print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * earthquake)))
         # earthquake magnitude to fault length
         print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * earthquake)))
         # magnitude to area of fault path that slipped
         print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * earthquake)))
-    # elif (isEmpty(MW) & notEmpty(M0))
+        # elif (isEmpty(MW) & notEmpty(M0))
     elif earthquake == 0.0 and seismic != 0.0:
         M0 = (np.log10(seismic) - 9.05) / 1.5
         print("M0toMw: " + str(M0))
-        # earthquake magnitude to corner frequency
+        # seismic moment to corner frequency
         print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / seismic), (1.0 / 3.0))))
     else:
         print("Error, no magnitude information given.")
@@ -203,9 +214,11 @@ def submit():
     #     print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * earthquake)))
     # MwtoRA()
 
+
 # creates a new window popup
     window = tk.Toplevel(root)
     window.geometry("900x400")
+    window.title("Rupture Generator Results")
     # labels for first column
     scenario_text = tk.Label(window, text='Scenario Name', font=('calibre', 12, 'bold'))
     text_scenario = tk.Label(window, text=scenario, font=('calibre', 12))
@@ -243,6 +256,7 @@ def submit():
     text_velocity = tk.Label(window, text=velocity, font=('calibre', 12))
     time_text = tk.Label(window, text='Source Time Function', font=('calibre', 12, 'bold'))
     text_time = tk.Label(window, text=time, font=('calibre', 12))
+
     # grid to display first column of inputs received from user
     scenario_text.grid(row=0, column=0)
     text_scenario.grid(row=0, column=1)
@@ -280,6 +294,7 @@ def submit():
     text_velocity.grid(row=3, column=5)
     time_text.grid(row=4, column=4)
     text_time.grid(row=4, column=5)
+
 
 # label, entry, menu ( first column )
 # creating a label for fault name
@@ -330,10 +345,22 @@ velocity_label = tk.Label(root, text='Rupture Velocity (m/s)', font=('calibre', 
 velocity_entry = tk.Entry(root, textvariable=rupture_velocity, font=('calibre', 10, 'normal'))
 time_label = tk.Label(root, text='Source Time Function', font=('calibre', 10, 'bold'))
 time_entry = tk.OptionMenu(root, source_time, *SourceList)
+c1 = tk.Checkbutton(root, text='Visualize', variable=boolean1, onvalue=1, offvalue=0)
+c2 = tk.Checkbutton(root, text='Save File', variable=boolean2, onvalue=1, offvalue=0)
+
+
+def test():
+    x = np.arange(0, 4 * np.pi, 0.1)
+    y = np.sin(x)
+    plt.plot(x, y)
+    # must have block=False for plot to display
+    plt.show(block=False)
+test()
 
 # creating a button using the widget
 # Button that will call the submit function
 sub_btn = tkm.Button(root, text='Submit', command=submit, fg='white', background='#5EA6F7')
+plot_button = tkm.Button(root, text='Plot', command=test, fg='white', background='#75C4BD')
 
 # placing the label and entry in
 # the required position using grid
@@ -344,6 +371,7 @@ earthquake_label.grid(row=1, column=0)
 earthquake_entry.grid(row=1, column=1)
 seismic_label.grid(row=2, column=0)
 seismic_entry.grid(row=2, column=1)
+plot_button.grid(row=3, column=1)
 
 # grid for second column
 rupture_label.grid(row=0, column=2)
@@ -376,11 +404,13 @@ velocity_label.grid(row=3, column=4)
 velocity_entry.grid(row=3, column=5)
 time_label.grid(row=4, column=4)
 time_entry.grid(row=4, column=5)
-sub_btn.grid(row=5, column=5)
+c1.grid(row=5, column=4)
+c2.grid(row=6, column=4)
+sub_btn.grid(row=7, column=5)
+quit_button.grid(row=8, column=5)
 
 # performing an infinite loop
 # for the window to display
 root.mainloop()
-
 
 
