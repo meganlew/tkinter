@@ -2,6 +2,9 @@ import tkinter as tk
 import numpy as np
 import tkmacosx as tkm
 import matplotlib.pyplot as plt
+import finiteSource_functions    # this runs that code and defines the function
+#finiteSource_functions.ellipseSource()   # this calls the function ellipseSource() that is defined in the other file
+
 
 #  Fault Rupture Type, Dropdown menu options
 RuptureList = [
@@ -71,6 +74,7 @@ source_time.set(SourceList[0])
 # defining a function that will
 # print them on the screen when button is clicked
 def submit():
+    finiteSource_functions.ellipseSource()
     # first column
     scenario = scenario_name.get()
     earthquake = earthquake_mag.get()
@@ -355,11 +359,15 @@ def test():
     plt.plot(x, y)
     # must have block=False for plot to display
     plt.show(block=False)
+
+
 test()
+
+
 
 # creating a button using the widget
 # Button that will call the submit function
-sub_btn = tkm.Button(root, text='Submit', command=submit, fg='white', background='#5EA6F7')
+sub_btn = tkm.Button(root, text='Submit', command=lambda: [submit(), ellipseSource()], fg='white', background='#5EA6F7')
 plot_button = tkm.Button(root, text='Plot', command=test, fg='white', background='#75C4BD')
 
 # placing the label and entry in
@@ -412,5 +420,8 @@ quit_button.grid(row=8, column=5)
 # performing an infinite loop
 # for the window to display
 root.mainloop()
+
+
+
 
 
