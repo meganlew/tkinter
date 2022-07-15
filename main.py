@@ -37,8 +37,6 @@ root.title("Rupture Generator")
 # setting the windows size
 root.geometry("900x400")
 
-# quit button
-quit_button = tkm.Button(root, text='Quit', fg='white', background='#E4683C', command=root.quit)
 
 # variables in the first column
 scenario_name = tk.StringVar()  # scenario name (str)
@@ -71,15 +69,14 @@ rupture_area.set(ShapeList[0])
 source_time.set(SourceList[0])
 
 
-
 # defining a function that will
 # print them on the screen when button is clicked
 def submit():
-    #finiteSource_functions.ellipseSource()
+    ellipseSource()
     # first column
     scenario = scenario_name.get()
-    earthquake = earthquake_mag.get()
-    seismic = seismic_moment.get()
+    MW = earthquake_mag.get()
+    M0 = seismic_moment.get()
 
     # second column
     rupture = fault_rupture.get()
@@ -102,8 +99,8 @@ def submit():
     bool2 = boolean2.get()
 
     print("Scenario Name: " + scenario)
-    print("Earthquake Magnitude: " + str(earthquake))
-    print("Seismic Moment: " + str(seismic))
+    print("Earthquake Magnitude: " + str(MW))
+    print("Seismic Moment: " + str(M0))
 
     print("Fault Rupture Type: " + rupture)
     print("Strike (degrees): " + str(strike))
@@ -132,7 +129,7 @@ def submit():
     # != not empty , == is empty
     # if (notEmpty(MW) & notEmpty(M0)
 
-    if earthquake != 0.0 and seismic != 0.0:
+    if MW != 0.0 and M0 != 0.0:
         # earthquake magnitude to seismic moment
         MwtoM0 = 10.0 ** (1.5 * earthquake + 9.05)
         print("Ignoring user input from M0, calculating M0 from MW")
@@ -140,84 +137,31 @@ def submit():
         # earthquake magnitude to corner frequency
         print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / MwtoM0), (1.0 / 3.0))))
         # earthquake magnitude to fault width
-        print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * earthquake)))
+        print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * MW)))
         # earthquake magnitude to fault length
-        print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * earthquake)))
+        print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * MW)))
         # magnitude to area of fault path that slipped
-        print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * earthquake)))
+        print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * MW)))
         # elif (notEmpty(MW) & isEmpty (M0))
-    elif earthquake != 0.0 and seismic == 0.0:
-        MwtoM0 = 10.0 ** (1.5 * earthquake + 9.05)
+    elif MW != 0.0 and M0 == 0.0:
+        MwtoM0 = 10.0 ** (1.5 * MW + 9.05)
         print("MwtoM0: " + str(MwtoM0))
         # earthquake magnitude to corner frequency
         print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / MwtoM0), (1.0 / 3.0))))
         # earthquake magnitude to fault width
-        print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * earthquake)))
+        print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * MW)))
         # earthquake magnitude to fault length
-        print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * earthquake)))
+        print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * MW)))
         # magnitude to area of fault path that slipped
-        print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * earthquake)))
+        print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * MW)))
         # elif (isEmpty(MW) & notEmpty(M0))
-    elif earthquake == 0.0 and seismic != 0.0:
-        M0 = (np.log10(seismic) - 9.05) / 1.5
-        print("M0toMw: " + str(M0))
+    elif MW == 0.0 and M0 != 0.0:
+        M0toMw = (np.log10(M0) - 9.05) / 1.5
+        print("M0toMw: " + str(M0toMw))
         # seismic moment to corner frequency
-        print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / seismic), (1.0 / 3.0))))
+        print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / M0), (1.0 / 3.0))))
     else:
         print("Error, no magnitude information given.")
-
-    # Mw = 10.0 ** (1.5 * earthquake + 9.05)
-    # print("MwtoM0: " + str(Mw))
-
-    # def MwtoM0(Mw):
-       #  return 10.0 ** (1.5 * Mw + 9.05)
-
-    # def MwtoM0():
-    #     # earthquake magnitude to seismic moment
-    #     Mw = 10.0 ** (1.5 * earthquake + 9.05)
-    #     print("MwtoM0: " + str(Mw))
-    # MwtoM0()
-
-    #def M0toMw(M0):
-       # return (np.log10(M0) - 9.05) / 1.5;
-
-    # def M0toMw():
-    #     # seismic moment to earthquake magnitude
-    #     M0 = (np.log10(seismic) - 9.05) / 1.5;
-    #     print("M0toMw: " + str(M0))
-    # M0toMw()
-    #
-    # # def M0tofc(M0, dSig=3.0 * 1.0e6, kBrune=0.38, Vs=3000.0):
-    #    # return kBrune * Vs * np.power(((16.0 / 7.0) * dSig / M0), (1.0 / 3.0))
-    #
-    # def M0tofc(dSig=3.0 * 1.0e6, kBrune=0.38, Vs=3000.0):
-    #     # earthquake magnitude to corner frequency
-    #     print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / seismic), (1.0 / 3.0))))
-    # M0tofc()
-    #
-    # # def MwtoRW(Mw, author='wellscoppersmith', faulttype='All'):
-    # # return 10.0 ** (-1.01 + 0.32 * Mw)
-    #
-    # def MwtoRW(author='wellscoppersmith', faulttype='All'):
-    #     # magnitude to fault width
-    #     print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * earthquake)))
-    # MwtoRW()
-    #
-    # # def MwtoRLD(Mw, author='wellscoppersmith', faulttype='All'):
-    # # return 10.0 ** (-2.44 + 0.59 * Mw)
-    #
-    # def MwtoRLD(author='wellscoppersmith', faulttype='All'):
-    #     # magnitude to fault length
-    #     print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * earthquake)))
-    # MwtoRLD()
-    #
-    # # def MwtoRA(Mw, author='wellscoppersmith', faulttype='All'):
-    # # return 10.0 ** (-3.49 + 0.91 * Mw)
-    #
-    # def MwtoRA(author='wellscoppersmith', faulttype='All'):
-    #     # magnitude to area of fault path that slipped
-    #     print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * earthquake)))
-    # MwtoRA()
 
 
 # creates a new window popup
@@ -228,9 +172,9 @@ def submit():
     scenario_text = tk.Label(window, text='Scenario Name', font=('calibre', 12, 'bold'))
     text_scenario = tk.Label(window, text=scenario, font=('calibre', 12))
     earthquake_text = tk.Label(window, text='Earthquake Magnitude', font=('calibre', 12, 'bold'))
-    text_earthquake = tk.Label(window, text=earthquake, font=('calibre', 12))
+    text_earthquake = tk.Label(window, text=MW, font=('calibre', 12))
     seismic_text = tk.Label(window, text='Seismic Moment', font=('calibre', 12, 'bold'))
-    text_seismic = tk.Label(window, text=seismic, font=('calibre', 12))
+    text_seismic = tk.Label(window, text=M0, font=('calibre', 12))
     # labels for the second column
     rupture_text = tk.Label(window, text='Fault Rupture Type', font=('calibre', 12, 'bold'))
     text_rupture = tk.Label(window, text=rupture, font=('calibre', 12))
@@ -354,22 +298,11 @@ c1 = tk.Checkbutton(root, text='Visualize', variable=boolean1, onvalue=1, offval
 c2 = tk.Checkbutton(root, text='Save File', variable=boolean2, onvalue=1, offvalue=0)
 
 
-def test():
-    x = np.arange(0, 4 * np.pi, 0.1)
-    y = np.sin(x)
-    plt.plot(x, y)
-    # must have block=False for plot to display
-    plt.show(block=False)
-
-
-test()
-
-
-
 # creating a button using the widget
 # Button that will call the submit function
-sub_btn = tkm.Button(root, text='Submit', command=lambda: [submit(), ellipseSource()], fg='white', background='#5EA6F7')
-plot_button = tkm.Button(root, text='Plot', command=test, fg='white', background='#75C4BD')
+sub_btn = tkm.Button(root, text='Submit', command=submit, fg='white', background='#5EA6F7')
+# quit button
+quit_button = tkm.Button(root, text='Quit', fg='white', background='#E4683C', command=root.quit)
 
 # placing the label and entry in
 # the required position using grid
@@ -380,7 +313,6 @@ earthquake_label.grid(row=1, column=0)
 earthquake_entry.grid(row=1, column=1)
 seismic_label.grid(row=2, column=0)
 seismic_entry.grid(row=2, column=1)
-plot_button.grid(row=3, column=1)
 
 # grid for second column
 rupture_label.grid(row=0, column=2)
@@ -421,6 +353,12 @@ quit_button.grid(row=8, column=5)
 # performing an infinite loop
 # for the window to display
 root.mainloop()
+
+
+
+
+
+
 
 
 
