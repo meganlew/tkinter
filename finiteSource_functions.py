@@ -120,4 +120,3 @@ def ellipseSource():
 	# ax01.imshow(dSigFault,extent=(xx[0],xx[-1],zz[0],zz[-1]),origin='lower')
 
 	plt.show()
-ellipseSource()
