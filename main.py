@@ -72,10 +72,10 @@ source_time.set(SourceList[0])
 # defining a function that will
 # print them on the screen when button is clicked
 def submit():
-    ellipseSource()
+    ellipseSource(4.5, True, True, True)
     # first column
     scenario = scenario_name.get()
-    MW = earthquake_mag.get()
+    Mw = earthquake_mag.get()
     M0 = seismic_moment.get()
 
     # second column
@@ -99,7 +99,7 @@ def submit():
     bool2 = boolean2.get()
 
     print("Scenario Name: " + scenario)
-    print("Earthquake Magnitude: " + str(MW))
+    print("Earthquake Magnitude: " + str(Mw))
     print("Seismic Moment: " + str(M0))
 
     print("Fault Rupture Type: " + rupture)
@@ -129,33 +129,33 @@ def submit():
     # != not empty , == is empty
     # if (notEmpty(MW) & notEmpty(M0)
 
-    if MW != 0.0 and M0 != 0.0:
+    if Mw != 0.0 and M0 != 0.0:
         # earthquake magnitude to seismic moment
-        MwtoM0 = 10.0 ** (1.5 * earthquake + 9.05)
+        MwtoM0 = 10.0 ** (1.5 * Mw + 9.05)
         print("Ignoring user input from M0, calculating M0 from MW")
         print("MwtoM0: " + str(MwtoM0))
         # earthquake magnitude to corner frequency
         print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / MwtoM0), (1.0 / 3.0))))
         # earthquake magnitude to fault width
-        print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * MW)))
+        print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * Mw)))
         # earthquake magnitude to fault length
-        print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * MW)))
+        print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * Mw)))
         # magnitude to area of fault path that slipped
-        print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * MW)))
+        print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * Mw)))
         # elif (notEmpty(MW) & isEmpty (M0))
-    elif MW != 0.0 and M0 == 0.0:
-        MwtoM0 = 10.0 ** (1.5 * MW + 9.05)
+    elif Mw != 0.0 and M0 == 0.0:
+        MwtoM0 = 10.0 ** (1.5 * Mw + 9.05)
         print("MwtoM0: " + str(MwtoM0))
         # earthquake magnitude to corner frequency
         print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / MwtoM0), (1.0 / 3.0))))
         # earthquake magnitude to fault width
-        print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * MW)))
+        print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * Mw)))
         # earthquake magnitude to fault length
-        print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * MW)))
+        print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * Mw)))
         # magnitude to area of fault path that slipped
-        print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * MW)))
+        print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * Mw)))
         # elif (isEmpty(MW) & notEmpty(M0))
-    elif MW == 0.0 and M0 != 0.0:
+    elif Mw == 0.0 and M0 != 0.0:
         M0toMw = (np.log10(M0) - 9.05) / 1.5
         print("M0toMw: " + str(M0toMw))
         # seismic moment to corner frequency
@@ -172,7 +172,7 @@ def submit():
     scenario_text = tk.Label(window, text='Scenario Name', font=('calibre', 12, 'bold'))
     text_scenario = tk.Label(window, text=scenario, font=('calibre', 12))
     earthquake_text = tk.Label(window, text='Earthquake Magnitude', font=('calibre', 12, 'bold'))
-    text_earthquake = tk.Label(window, text=MW, font=('calibre', 12))
+    text_earthquake = tk.Label(window, text=Mw, font=('calibre', 12))
     seismic_text = tk.Label(window, text='Seismic Moment', font=('calibre', 12, 'bold'))
     text_seismic = tk.Label(window, text=M0, font=('calibre', 12))
     # labels for the second column
@@ -294,8 +294,8 @@ velocity_label = tk.Label(root, text='Rupture Velocity (m/s)', font=('calibre', 
 velocity_entry = tk.Entry(root, textvariable=rupture_velocity, font=('calibre', 10, 'normal'))
 time_label = tk.Label(root, text='Source Time Function', font=('calibre', 10, 'bold'))
 time_entry = tk.OptionMenu(root, source_time, *SourceList)
-c1 = tk.Checkbutton(root, text='Visualize', variable=boolean1, onvalue=1, offvalue=0)
-c2 = tk.Checkbutton(root, text='Save File', variable=boolean2, onvalue=1, offvalue=0)
+c1 = tk.Checkbutton(root, text='Visualize 2D', variable=boolean1, onvalue=1, offvalue=0)
+c2 = tk.Checkbutton(root, text='Visualize 3D', variable=boolean2, onvalue=1, offvalue=0)
 
 
 # creating a button using the widget
@@ -353,16 +353,3 @@ quit_button.grid(row=8, column=5)
 # performing an infinite loop
 # for the window to display
 root.mainloop()
-
-
-
-
-
-
-
-
-
-
-
-
-
