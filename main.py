@@ -63,6 +63,7 @@ source_time = tk.StringVar()  # source time function (menu)
 boolean1 = tk.BooleanVar()
 boolean2 = tk.BooleanVar()
 boolean3 = tk.BooleanVar()
+boolean4 = tk.BooleanVar()
 
 # set default as first index in the list
 fault_rupture.set(RuptureList[0])
@@ -98,8 +99,9 @@ def submit():
     bool1 = boolean1.get()
     bool2 = boolean2.get()
     bool3 = boolean3.get()
+    bool4 = boolean4.get()
 
-    ellipseSource(Mw, bool1, bool2, bool3)
+    ellipseSource(Mw, bool1, bool2, bool3, bool4)
     print("Scenario Name: " + scenario)
     print("Earthquake Magnitude: " + str(Mw))
     print("Seismic Moment: " + str(M0))
@@ -124,6 +126,9 @@ def submit():
     earthquake_mag.set(1.2)
     fault_rupture.set("")
     seismic_moment.set(1.2)
+    strike_degrees.set(0.0)
+    dip_degrees.set(90.0)
+    rake_degrees.set(180.0)
 
     dSig = 3.0 * 1.0e6
     kBrune = 0.38
@@ -298,7 +303,8 @@ time_label = tk.Label(root, text='Source Time Function', font=('calibre', 10, 'b
 time_entry = tk.OptionMenu(root, source_time, *SourceList)
 c1 = tk.Checkbutton(root, text='Visualize 2D', variable=boolean1, onvalue=1, offvalue=0)
 c2 = tk.Checkbutton(root, text='Visualize 3D', variable=boolean2, onvalue=1, offvalue=0)
-c3 = tk.Checkbutton(root, text='  Save File    ', variable=boolean3, onvalue=1, offvalue=0)
+c3 = tk.Checkbutton(root, text='Save File (Ascii List)', variable=boolean3, onvalue=1, offvalue=0)
+c4 = tk.Checkbutton(root, text='Save File (SW4 format)', variable=boolean4, onvalue=1, offvalue=0)
 
 
 # creating a button using the widget
@@ -351,8 +357,9 @@ time_entry.grid(row=4, column=5)
 c1.grid(row=5, column=4)
 c2.grid(row=6, column=4)
 c3.grid(row=7, column=4)
-sub_btn.grid(row=8, column=5)
-quit_button.grid(row=9, column=5)
+c4.grid(row=8, column=4)
+sub_btn.grid(row=9, column=5)
+quit_button.grid(row=10, column=5)
 
 # performing an infinite loop
 # for the window to display
