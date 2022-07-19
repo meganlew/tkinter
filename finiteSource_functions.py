@@ -8,18 +8,18 @@ from mpl_toolkits.mplot3d import Axes3D
 
 from scipy import integrate
 
-
 def ellipseSource(Mw, \
 				  visualize2D, \
 				  visualize3D, \
-				  writeFile, \
+				  writeFileAscii, \
+				  writeFileSW4, \
 				  vrup=3000.0):
 
 
 	# should get these from GUI eventually
 	strike = 0.0
-	dip = 0.0
-	rake = 0.0
+	dip = 90.0
+	rake = 180.0
 	centroidX = 0.0
 	centroidY = 0.0
 	centroidZ = -10000.0
@@ -155,13 +155,39 @@ def ellipseSource(Mw, \
 
 
 	##write file
-	if writeFile == True:
+	if writeFileAscii == True:
 		saveFileName = 'subfaults.txt'
 		datW = np.column_stack((xxx,zzz,m0Fault,trup))
 		np.savetxt(saveFileName,datW)
 
 
-#ellipseSource(4.5,True,True,True)
+
+
+	##write file in format for SW4 input
+	if writeFileSW4 == True:
+		f = open('subfaultsSW4.txt','w')
+		for ix in np.arange(0,nx,2):
+			for iz in np.arange(0,nz,2):
+				if slip02d[iz,ix]==0:
+					continue
+				subfaultM0 = m0Fault2d[iz,ix]
+				subfaultfc = src.M0tofc(subfaultM0,dSig=dSigFault2d[iz,ix])
+				subfaultx = XX[iz,ix]
+				subfaultz = ZZ[iz,ix]
+				subfaulttrup = trup2d[iz,ix]
+				string0 = 'source x=' + '{:.4f}'.format(subfaultx) + \
+						  ' y=' + '{:.4f}'.format(0) + ' z=' + '{:.4f}'.format(subfaultz) + \
+						  ' m0=' + '{:.4e}'.format(subfaultM0) + ' strike=' + '{:.2f}'.format(strike) + \
+						  ' dip=' + '{:.2f}'.format(dip) + ' rake=' + '{:.2f}'.format(rake) + \
+						  ' type=Triangle freq=' + '{:.4f}'.format(subfaultfc) + ' t0=' + '{:.4f}'.format(subfaulttrup)
+				f.write(string0 + '\n')
+		f.close()
+
+
+
+#ellipseSource(4.5,True,True,True,True)
+
+
 
 
 
