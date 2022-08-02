@@ -5,6 +5,7 @@ from tkinter import ttk
 from tkinter.messagebox import showinfo
 import matplotlib.pyplot as plt
 from finiteSource_functions import ellipseSource
+from tkinter import Menu
 #import finiteSource_functions    # this runs that code and defines the function
 #finiteSource_functions.ellipseSource()   # this calls the function ellipseSource() that is defined in the other file
 
@@ -69,344 +70,364 @@ fault_rupture.set(RuptureList[0])
 rupture_area.set(ShapeList[0])
 source_time.set(SourceList[0])
 
+# create a menubar
+menubar = Menu(root)
+root.config(menu=menubar)
+
+# create a menu
+file_menu = Menu(menubar)
+
+# add a menu item to the menu
+file_menu.add_command(
+    label='Exit',
+    command=root.destroy
+)
 
 
-def result():
-    window = tk.Toplevel(root)
-    window.geometry("900x400")
-    window.title("Rupture Generator Results")
-    # labels for first column
-    scenario_text = tk.Label(window, text='Scenario Name', font=('calibre', 12, 'bold'), anchor='w')
-    text_scenario = tk.Label(window, text=scenario, font=('calibre', 12), anchor='w')
-    earthquake_text = tk.Label(window, text='Earthquake Magnitude', font=('calibre', 12, 'bold'))
-    text_earthquake = tk.Label(window, text=Mw, font=('calibre', 12))
-    # seismic_text = tk.Label(window, text='Seismic Moment', font=('calibre', 12, 'bold'))
-    # text_seismic = tk.Label(window, text=M0, font=('calibre', 12))
-    # labels for the second column
-    rupture_text = tk.Label(window, text='Fault Rupture Type', font=('calibre', 12, 'bold'))
-    text_rupture = tk.Label(window, text=rupture, font=('calibre', 12))
-    strike_text = tk.Label(window, text='Strike (degrees) ', font=('calibre', 12, 'bold'))
-    text_strike = tk.Label(window, text=strike, font=('calibre', 12))
-    dip_text = tk.Label(window, text='Dip (degrees)', font=('calibre', 12, 'bold'))
-    text_dip = tk.Label(window, text=dip, font=('calibre', 12))
-    rake_text = tk.Label(window, text='Rake (degrees)', font=('calibre', 12, 'bold'))
-    text_rake = tk.Label(window, text=rake, font=('calibre', 12))
-    slipX_text = tk.Label(window, text='Slip Centroid, X', font=('calibre', 12, 'bold'))
-    text_slipX = tk.Label(window, text=slip_x, font=('calibre', 12))
-    slipY_text = tk.Label(window, text='Slip Centroid, Y', font=('calibre', 12, 'bold'))
-    text_slipY = tk.Label(window, text=slip_y, font=('calibre', 12))
-    slipZ_text = tk.Label(window, text='Slip Centroid, X', font=('calibre', 12, 'bold'))
-    text_slipZ = tk.Label(window, text=slip_z, font=('calibre', 12))
-    area_text = tk.Label(window, text='Rupture Area Shape', font=('calibre', 12, 'bold'))
-    text_area = tk.Label(window, text=area, font=('calibre', 12))
-    ratio_text = tk.Label(window, text='Rupture Area Shape', font=('calibre', 12, 'bold'))
-    text_ratio = tk.Label(window, text=ratio, font=('calibre', 12))
-    # labels for third column
-    hypocenterX_text = tk.Label(window, text='Hypocenter location, X', font=('calibre', 12, 'bold'))
-    text_hypocenterX = tk.Label(window, text=location_x, font=('calibre', 12))
-    hypocenterY_text = tk.Label(window, text='Hypocenter location, Y', font=('calibre', 12, 'bold'))
-    text_hypocenterY = tk.Label(window, text=location_y, font=('calibre', 12))
-    hypocenterZ_text = tk.Label(window, text='Hypocenter location, Z', font=('calibre', 12, 'bold'))
-    text_hypocenterZ = tk.Label(window, text=location_z, font=('calibre', 12))
-    velocity_text = tk.Label(window, text='Rupture Velocity (m/s)', font=('calibre', 12, 'bold'))
-    text_velocity = tk.Label(window, text=velocity, font=('calibre', 12))
-    time_text = tk.Label(window, text='Source Time Function', font=('calibre', 12, 'bold'))
-    text_time = tk.Label(window, text=time, font=('calibre', 12))
+# add the File menu to the menubar
+menubar.add_cascade(
+    label="File",
+    menu=file_menu
+)
 
-    # grid to display first column of inputs received from user
-    scenario_text.grid(row=0, column=0)
-    text_scenario.grid(row=0, column=1)
-    earthquake_text.grid(row=1, column=0)
-    text_earthquake.grid(row=1, column=1)
-    # seismic_text.grid(row=2, column=0)
-    # text_seismic.grid(row=2, column=1)
-    # second column grid
-    rupture_text.grid(row=0, column=2)
-    text_rupture.grid(row=0, column=3)
-    strike_text.grid(row=1, column=2)
-    text_strike.grid(row=1, column=3)
-    dip_text.grid(row=2, column=2)
-    text_dip.grid(row=2, column=3)
-    rake_text.grid(row=3, column=2)
-    text_rake.grid(row=3, column=3)
-    slipX_text.grid(row=4, column=2)
-    text_slipX.grid(row=4, column=3)
-    slipY_text.grid(row=5, column=2)
-    text_slipY.grid(row=5, column=3)
-    slipZ_text.grid(row=6, column=2)
-    text_slipZ.grid(row=6, column=3)
-    area_text.grid(row=7, column=2)
-    text_area.grid(row=7, column=3)
-    ratio_text.grid(row=8, column=2)
-    text_ratio.grid(row=8, column=3)
-    # third column grid
-    hypocenterX_text.grid(row=0, column=4)
-    text_hypocenterX.grid(row=0, column=5)
-    hypocenterY_text.grid(row=1, column=4)
-    text_hypocenterY.grid(row=1, column=5)
-    hypocenterZ_text.grid(row=2, column=4)
-    text_hypocenterZ.grid(row=2, column=5)
-    velocity_text.grid(row=3, column=4)
-    text_velocity.grid(row=3, column=5)
-    time_text.grid(row=4, column=4)
-    text_time.grid(row=4, column=5)
 
+# def result():
+#     window = tk.Toplevel(root)
+#     window.geometry("900x400")
+#     window.title("Rupture Generator Results")
+#     # labels for first column
+#     scenario_text = tk.Label(window, text='Scenario Name', font=('calibre', 12, 'bold'), anchor='w')
+#     text_scenario = tk.Label(window, text=scenario, font=('calibre', 12), anchor='w')
+#     earthquake_text = tk.Label(window, text='Earthquake Magnitude', font=('calibre', 12, 'bold'))
+#     text_earthquake = tk.Label(window, text=Mw, font=('calibre', 12))
+#     # seismic_text = tk.Label(window, text='Seismic Moment', font=('calibre', 12, 'bold'))
+#     # text_seismic = tk.Label(window, text=M0, font=('calibre', 12))
+#     # labels for the second column
+#     rupture_text = tk.Label(window, text='Fault Rupture Type', font=('calibre', 12, 'bold'))
+#     text_rupture = tk.Label(window, text=rupture, font=('calibre', 12))
+#     strike_text = tk.Label(window, text='Strike (degrees) ', font=('calibre', 12, 'bold'))
+#     text_strike = tk.Label(window, text=strike, font=('calibre', 12))
+#     dip_text = tk.Label(window, text='Dip (degrees)', font=('calibre', 12, 'bold'))
+#     text_dip = tk.Label(window, text=dip, font=('calibre', 12))
+#     rake_text = tk.Label(window, text='Rake (degrees)', font=('calibre', 12, 'bold'))
+#     text_rake = tk.Label(window, text=rake, font=('calibre', 12))
+#     slipX_text = tk.Label(window, text='Slip Centroid, X', font=('calibre', 12, 'bold'))
+#     text_slipX = tk.Label(window, text=slip_x, font=('calibre', 12))
+#     slipY_text = tk.Label(window, text='Slip Centroid, Y', font=('calibre', 12, 'bold'))
+#     text_slipY = tk.Label(window, text=slip_y, font=('calibre', 12))
+#     slipZ_text = tk.Label(window, text='Slip Centroid, X', font=('calibre', 12, 'bold'))
+#     text_slipZ = tk.Label(window, text=slip_z, font=('calibre', 12))
+#     area_text = tk.Label(window, text='Rupture Area Shape', font=('calibre', 12, 'bold'))
+#     text_area = tk.Label(window, text=area, font=('calibre', 12))
+#     ratio_text = tk.Label(window, text='Rupture Area Shape', font=('calibre', 12, 'bold'))
+#     text_ratio = tk.Label(window, text=ratio, font=('calibre', 12))
+#     # labels for third column
+#     hypocenterX_text = tk.Label(window, text='Hypocenter location, X', font=('calibre', 12, 'bold'))
+#     text_hypocenterX = tk.Label(window, text=location_x, font=('calibre', 12))
+#     hypocenterY_text = tk.Label(window, text='Hypocenter location, Y', font=('calibre', 12, 'bold'))
+#     text_hypocenterY = tk.Label(window, text=location_y, font=('calibre', 12))
+#     hypocenterZ_text = tk.Label(window, text='Hypocenter location, Z', font=('calibre', 12, 'bold'))
+#     text_hypocenterZ = tk.Label(window, text=location_z, font=('calibre', 12))
+#     velocity_text = tk.Label(window, text='Rupture Velocity (m/s)', font=('calibre', 12, 'bold'))
+#     text_velocity = tk.Label(window, text=velocity, font=('calibre', 12))
+#     time_text = tk.Label(window, text='Source Time Function', font=('calibre', 12, 'bold'))
+#     text_time = tk.Label(window, text=time, font=('calibre', 12))
+#
+#     # grid to display first column of inputs received from user
+#     scenario_text.grid(row=0, column=0)
+#     text_scenario.grid(row=0, column=1)
+#     earthquake_text.grid(row=1, column=0)
+#     text_earthquake.grid(row=1, column=1)
+#     # seismic_text.grid(row=2, column=0)
+#     # text_seismic.grid(row=2, column=1)
+#     # second column grid
+#     rupture_text.grid(row=0, column=2)
+#     text_rupture.grid(row=0, column=3)
+#     strike_text.grid(row=1, column=2)
+#     text_strike.grid(row=1, column=3)
+#     dip_text.grid(row=2, column=2)
+#     text_dip.grid(row=2, column=3)
+#     rake_text.grid(row=3, column=2)
+#     text_rake.grid(row=3, column=3)
+#     slipX_text.grid(row=4, column=2)
+#     text_slipX.grid(row=4, column=3)
+#     slipY_text.grid(row=5, column=2)
+#     text_slipY.grid(row=5, column=3)
+#     slipZ_text.grid(row=6, column=2)
+#     text_slipZ.grid(row=6, column=3)
+#     area_text.grid(row=7, column=2)
+#     text_area.grid(row=7, column=3)
+#     ratio_text.grid(row=8, column=2)
+#     text_ratio.grid(row=8, column=3)
+#     # third column grid
+#     hypocenterX_text.grid(row=0, column=4)
+#     text_hypocenterX.grid(row=0, column=5)
+#     hypocenterY_text.grid(row=1, column=4)
+#     text_hypocenterY.grid(row=1, column=5)
+#     hypocenterZ_text.grid(row=2, column=4)
+#     text_hypocenterZ.grid(row=2, column=5)
+#     velocity_text.grid(row=3, column=4)
+#     text_velocity.grid(row=3, column=5)
+#     time_text.grid(row=4, column=4)
+#     text_time.grid(row=4, column=5)
+count = 0
 
 def submit():
-    main = tk.Toplevel(root)
-    main.geometry("900x400")
-    main.title("Rupture Generator")
+    global count
+    count = count + 1
+    if count == 1:
+        main = tk.Toplevel(root)
+        main.geometry("900x400")
+        main.title("Rupture Generator")
 
-    def update_progress_label():
-        return f"Current Progress: {pb['value']}%"
+        def update_progress_label():
+            return f"Current Progress: {pb['value']}%"
 
-    def progress():
-        if pb['value'] < 100:
-            pb['value'] += 20
+        def progress():
+            if pb['value'] < 100:
+                pb['value'] += 20
+                value_label['text'] = update_progress_label()
+            else:
+                showinfo(message='The progress completed!')
+
+        def stop():
+            pb.stop()
             value_label['text'] = update_progress_label()
-        else:
-            showinfo(message='The progress completed!')
 
-    def stop():
-        pb.stop()
-        value_label['text'] = update_progress_label()
+        # progressbar
+        pb = ttk.Progressbar(
+            main,
+            orient='horizontal',
+            mode='determinate',
+            length=280
+        )
+        # place the progressbar
+        pb.grid(column=0, row=6, columnspan=2, padx=10, pady=20)
 
-    # progressbar
-    pb = ttk.Progressbar(
-        main,
-        orient='horizontal',
-        mode='determinate',
-        length=280
-    )
-    # place the progressbar
-    pb.grid(column=0, row=6, columnspan=2, padx=10, pady=20)
+        # label
+        value_label = ttk.Label(main, text=update_progress_label())
+        value_label.grid(column=0, row=7, columnspan=2)
 
-    # label
-    value_label = ttk.Label(main, text=update_progress_label())
-    value_label.grid(column=0, row=7, columnspan=2)
+        # start button
+        start_button = ttk.Button(
+            main,
+            text='Progress',
+            command=progress
+        )
+        start_button.grid(column=0, row=8, padx=10, pady=10, sticky=tk.E)
 
-    # start button
-    start_button = ttk.Button(
-        main,
-        text='Progress',
-        command=progress
-    )
-    start_button.grid(column=0, row=8, padx=10, pady=10, sticky=tk.E)
+        stop_button = ttk.Button(
+            main,
+            text='Stop',
+            command=stop
+        )
+        stop_button.grid(column=1, row=8, padx=10, pady=10, sticky=tk.W)
 
-    stop_button = ttk.Button(
-        main,
-        text='Stop',
-        command=stop
-    )
-    stop_button.grid(column=1, row=8, padx=10, pady=10, sticky=tk.W)
+        # first column
+        scenario = scenario_name.get()
+        Mw = earthquake_mag.get()
+        # M0 = seismic_moment.get()
 
-    # first column
-    scenario = scenario_name.get()
-    Mw = earthquake_mag.get()
-    # M0 = seismic_moment.get()
+        # second column
+        rupture = fault_rupture.get()
+        strike = strike_degrees.get()
+        dip = dip_degrees.get()
+        rake = rake_degrees.get()
+        slip_x = centroid_x.get()
+        slip_y = centroid_y.get()
+        slip_z = centroid_z.get()
+        area = rupture_area.get()
+        ratio = aspect_ratio.get()
 
-    # second column
-    rupture = fault_rupture.get()
-    strike = strike_degrees.get()
-    dip = dip_degrees.get()
-    rake = rake_degrees.get()
-    slip_x = centroid_x.get()
-    slip_y = centroid_y.get()
-    slip_z = centroid_z.get()
-    area = rupture_area.get()
-    ratio = aspect_ratio.get()
+        # third column
+        location_x = hypocenter_x.get()
+        location_y = hypocenter_y.get()
+        location_z = hypocenter_z.get()
+        velocity = rupture_velocity.get()
+        time = source_time.get()
+        bool0 = boolean0.get()
+        bool1 = boolean1.get()
+        bool2 = boolean2.get()
+        bool3 = boolean3.get()
+        bool4 = boolean4.get()
 
-    # third column
-    location_x = hypocenter_x.get()
-    location_y = hypocenter_y.get()
-    location_z = hypocenter_z.get()
-    velocity = rupture_velocity.get()
-    time = source_time.get()
-    bool0 = boolean0.get()
-    bool1 = boolean1.get()
-    bool2 = boolean2.get()
-    bool3 = boolean3.get()
-    bool4 = boolean4.get()
+        ellipseSource(Mw, bool1, bool2, bool3, bool4)
+        # print("Scenario Name: " + scenario)
+        # print("Earthquake Magnitude: " + str(Mw))
+        # print("Seismic Moment: " + str(M0))
+        #
+        # print("Fault Rupture Type: " + rupture)
+        # print("Strike (degrees): " + str(strike))
+        # print("Dip (degrees): " + str(dip))
+        # print("Rake (degrees): " + str(rake))
+        # print("Slip Centroid, X: " + str(slip_x))
+        # print("Slip Centroid, Y: " + str(slip_y))
+        # print("Slip Centroid, Z: " + str(slip_z))
+        # print("Rupture Area Shape: " + area)
+        # print("Aspect Ratio: " + str(ratio))
+        #
+        # print("Hypocenter Location, X: " + str(location_x))
+        # print("Hypocenter Location, Y: " + str(location_y))
+        # print("Hypocenter Location, Z: " + str(location_z))
+        # print("Rupture Velocity (m/s): " + str(velocity))
+        # print("Source Time Function: " + time)
 
-    ellipseSource(Mw, bool1, bool2, bool3, bool4)
-    # print("Scenario Name: " + scenario)
-    # print("Earthquake Magnitude: " + str(Mw))
-    # print("Seismic Moment: " + str(M0))
-    #
-    # print("Fault Rupture Type: " + rupture)
-    # print("Strike (degrees): " + str(strike))
-    # print("Dip (degrees): " + str(dip))
-    # print("Rake (degrees): " + str(rake))
-    # print("Slip Centroid, X: " + str(slip_x))
-    # print("Slip Centroid, Y: " + str(slip_y))
-    # print("Slip Centroid, Z: " + str(slip_z))
-    # print("Rupture Area Shape: " + area)
-    # print("Aspect Ratio: " + str(ratio))
-    #
-    # print("Hypocenter Location, X: " + str(location_x))
-    # print("Hypocenter Location, Y: " + str(location_y))
-    # print("Hypocenter Location, Z: " + str(location_z))
-    # print("Rupture Velocity (m/s): " + str(velocity))
-    # print("Source Time Function: " + time)
+        scenario_name.set("")
+        earthquake_mag.set(4.5)
+        fault_rupture.set("")
+        # seismic_moment.set(1.2)
+        strike_degrees.set(0.0)
+        dip_degrees.set(90.0)
+        rake_degrees.set(180.0)
 
-    scenario_name.set("")
-    earthquake_mag.set(1.2)
-    fault_rupture.set("")
-    # seismic_moment.set(1.2)
-    strike_degrees.set(0.0)
-    dip_degrees.set(90.0)
-    rake_degrees.set(180.0)
+        dSig = 3.0 * 1.0e6
+        kBrune = 0.38
+        Vs = 3000.0
+        # != not empty , == is empty
+        # if (notEmpty(MW) & notEmpty(M0)
 
-    dSig = 3.0 * 1.0e6
-    kBrune = 0.38
-    Vs = 3000.0
-    # != not empty , == is empty
-    # if (notEmpty(MW) & notEmpty(M0)
+        # if Mw != 0.0 and M0 != 0.0:
+        #     # earthquake magnitude to seismic moment
+        #     MwtoM0 = 10.0 ** (1.5 * Mw + 9.05)
+        #     print("Ignoring user input from M0, calculating M0 from MW")
+        #     print("MwtoM0: " + str(MwtoM0))
+        #     # earthquake magnitude to corner frequency
+        #     print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / MwtoM0), (1.0 / 3.0))))
+        #     # earthquake magnitude to fault width
+        #     print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * Mw)))
+        #     # earthquake magnitude to fault length
+        #     print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * Mw)))
+        #     # magnitude to area of fault path that slipped
+        #     print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * Mw)))
+        #     # elif (notEmpty(MW) & isEmpty (M0))
+        # elif Mw != 0.0 and M0 == 0.0:
+        #     MwtoM0 = 10.0 ** (1.5 * Mw + 9.05)
+        #     print("MwtoM0: " + str(MwtoM0))
+        #     # earthquake magnitude to corner frequency
+        #     print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / MwtoM0), (1.0 / 3.0))))
+        #     # earthquake magnitude to fault width
+        #     print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * Mw)))
+        #     # earthquake magnitude to fault length
+        #     print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * Mw)))
+        #     # magnitude to area of fault path that slipped
+        #     print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * Mw)))
+        #     # elif (isEmpty(MW) & notEmpty(M0))
+        # elif Mw == 0.0 and M0 != 0.0:
+        #     M0toMw = (np.log10(M0) - 9.05) / 1.5
+        #     print("M0toMw: " + str(M0toMw))
+        #     # seismic moment to corner frequency
+        #     print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / M0), (1.0 / 3.0))))
+        # else:
+        #     print("Error, no magnitude information given.")
 
-    # if Mw != 0.0 and M0 != 0.0:
-    #     # earthquake magnitude to seismic moment
-    #     MwtoM0 = 10.0 ** (1.5 * Mw + 9.05)
-    #     print("Ignoring user input from M0, calculating M0 from MW")
-    #     print("MwtoM0: " + str(MwtoM0))
-    #     # earthquake magnitude to corner frequency
-    #     print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / MwtoM0), (1.0 / 3.0))))
-    #     # earthquake magnitude to fault width
-    #     print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * Mw)))
-    #     # earthquake magnitude to fault length
-    #     print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * Mw)))
-    #     # magnitude to area of fault path that slipped
-    #     print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * Mw)))
-    #     # elif (notEmpty(MW) & isEmpty (M0))
-    # elif Mw != 0.0 and M0 == 0.0:
-    #     MwtoM0 = 10.0 ** (1.5 * Mw + 9.05)
-    #     print("MwtoM0: " + str(MwtoM0))
-    #     # earthquake magnitude to corner frequency
-    #     print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / MwtoM0), (1.0 / 3.0))))
-    #     # earthquake magnitude to fault width
-    #     print("MwtoRW: " + str(10.0 ** (-1.01 + 0.32 * Mw)))
-    #     # earthquake magnitude to fault length
-    #     print("MwtoRLD: " + str(10.0 ** (-2.44 + 0.59 * Mw)))
-    #     # magnitude to area of fault path that slipped
-    #     print("MwtoRA: " + str(10.0 ** (-3.49 + 0.91 * Mw)))
-    #     # elif (isEmpty(MW) & notEmpty(M0))
-    # elif Mw == 0.0 and M0 != 0.0:
-    #     M0toMw = (np.log10(M0) - 9.05) / 1.5
-    #     print("M0toMw: " + str(M0toMw))
-    #     # seismic moment to corner frequency
-    #     print("M0tofc: " + str(kBrune * Vs * np.power(((16.0 / 7.0) * dSig / M0), (1.0 / 3.0))))
-    # else:
-    #     print("Error, no magnitude information given.")
+        # label, entry, menu ( first column )
+        # creating a label for fault name
+        scenario_label = tk.Label(main, text='Scenario Name', font=('calibre', 10, 'bold'))
+        # creating a entry for fault name
+        scenario_entry = tk.Entry(main, textvariable=scenario_name, font=('calibre', 10, 'normal'))
+        # creating a label for
+        # earthquake mag using widget Label
+        earthquake_label = tk.Label(main, text='Earthquake Magnitude', font=('calibre', 10, 'bold'))
+        # creating a entry for input
+        # earthquake mag using widget Entry
+        earthquake_entry = tk.Entry(main, textvariable=earthquake_mag, font=('calibre', 10, 'normal'))
+        # creating a label for seismic moment type
+        # seismic_label = tk.Label(root, text='Seismic Moment', font=('calibre', 10, 'bold'))
+        # # creating an entry for seismic moment type
+        # seismic_entry = tk.Entry(root, textvariable=seismic_moment, font=('calibre', 10, 'normal'))
 
-    # label, entry, menu ( first column )
-    # creating a label for fault name
-    scenario_label = tk.Label(main, text='Scenario Name', font=('calibre', 10, 'bold'))
-    # creating a entry for fault name
-    scenario_entry = tk.Entry(main, textvariable=scenario_name, font=('calibre', 10, 'normal'))
-    # creating a label for
-    # earthquake mag using widget Label
-    earthquake_label = tk.Label(main, text='Earthquake Magnitude', font=('calibre', 10, 'bold'))
-    # creating a entry for input
-    # earthquake mag using widget Entry
-    earthquake_entry = tk.Entry(main, textvariable=earthquake_mag, font=('calibre', 10, 'normal'))
-    # creating a label for seismic moment type
-    # seismic_label = tk.Label(root, text='Seismic Moment', font=('calibre', 10, 'bold'))
-    # # creating an entry for seismic moment type
-    # seismic_entry = tk.Entry(root, textvariable=seismic_moment, font=('calibre', 10, 'normal'))
+        # second column
+        # creating a label for fault rupture type
+        rupture_label = tk.Label(main, text='Fault Rupture Type', font=('calibre', 10, 'bold'))
+        # creating menu for fault rupture type
+        rupture_entry = tk.OptionMenu(main, fault_rupture, *RuptureList)
+        strike_label = tk.Label(main, text='Strike (degrees)', font=('calibre', 10, 'bold'))
+        strike_entry = tk.Entry(main, textvariable=strike_degrees, font=('calibre', 10, 'normal'))
+        dip_label = tk.Label(main, text='Dip (degrees)', font=('calibre', 10, 'bold'))
+        dip_entry = tk.Entry(main, textvariable=dip_degrees, font=('calibre', 10, 'normal'))
+        rake_label = tk.Label(main, text='Rake (degrees)', font=('calibre', 10, 'bold'))
+        rake_entry = tk.Entry(main, textvariable=rake_degrees, font=('calibre', 10, 'normal'))
+        slipX_label = tk.Label(main, text='Slip Centroid, X', font=('calibre', 10, 'bold'))
+        slipX_entry = tk.Entry(main, textvariable=centroid_x, font=('calibre', 10, 'normal'))
+        slipY_label = tk.Label(main, text='Slip Centroid, Y', font=('calibre', 10, 'bold'))
+        slipY_entry = tk.Entry(main, textvariable=centroid_y, font=('calibre', 10, 'normal'))
+        slipZ_label = tk.Label(main, text='Slip Centroid, Z', font=('calibre', 10, 'bold'))
+        slipZ_entry = tk.Entry(main, textvariable=centroid_z, font=('calibre', 10, 'normal'))
+        area_label = tk.Label(main, text='Rupture Area Shape', font=('calibre', 10, 'bold'))
+        area_entry = tk.OptionMenu(main, rupture_area, *ShapeList)
+        ratio_label = tk.Label(main, text='Aspect ratio', font=('calibre', 10, 'bold'))
+        ratio_entry = tk.Entry(main, textvariable=aspect_ratio, font=('calibre', 10, 'normal'))
 
-    # second column
-    # creating a label for fault rupture type
-    rupture_label = tk.Label(main, text='Fault Rupture Type', font=('calibre', 10, 'bold'))
-    # creating menu for fault rupture type
-    rupture_entry = tk.OptionMenu(main, fault_rupture, *RuptureList)
-    strike_label = tk.Label(main, text='Strike (degrees)', font=('calibre', 10, 'bold'))
-    strike_entry = tk.Entry(main, textvariable=strike_degrees, font=('calibre', 10, 'normal'))
-    dip_label = tk.Label(main, text='Dip (degrees)', font=('calibre', 10, 'bold'))
-    dip_entry = tk.Entry(main, textvariable=dip_degrees, font=('calibre', 10, 'normal'))
-    rake_label = tk.Label(main, text='Rake (degrees)', font=('calibre', 10, 'bold'))
-    rake_entry = tk.Entry(main, textvariable=rake_degrees, font=('calibre', 10, 'normal'))
-    slipX_label = tk.Label(main, text='Slip Centroid, X', font=('calibre', 10, 'bold'))
-    slipX_entry = tk.Entry(main, textvariable=centroid_x, font=('calibre', 10, 'normal'))
-    slipY_label = tk.Label(main, text='Slip Centroid, Y', font=('calibre', 10, 'bold'))
-    slipY_entry = tk.Entry(main, textvariable=centroid_y, font=('calibre', 10, 'normal'))
-    slipZ_label = tk.Label(main, text='Slip Centroid, Z', font=('calibre', 10, 'bold'))
-    slipZ_entry = tk.Entry(main, textvariable=centroid_z, font=('calibre', 10, 'normal'))
-    area_label = tk.Label(main, text='Rupture Area Shape', font=('calibre', 10, 'bold'))
-    area_entry = tk.OptionMenu(main, rupture_area, *ShapeList)
-    ratio_label = tk.Label(main, text='Aspect ratio', font=('calibre', 10, 'bold'))
-    ratio_entry = tk.Entry(main, textvariable=aspect_ratio, font=('calibre', 10, 'normal'))
+        # third column
+        hypocenterX_label = tk.Label(main, text='Hypocenter Location, X', font=('calibre', 10, 'bold'))
+        hypocenterX_entry = tk.Entry(main, textvariable=hypocenter_x, font=('calibre', 10, 'normal'))
+        hypocenterY_label = tk.Label(main, text='Hypocenter Location, Y', font=('calibre', 10, 'bold'))
+        hypocenterY_entry = tk.Entry(main, textvariable=hypocenter_y, font=('calibre', 10, 'normal'))
+        hypocenterZ_label = tk.Label(main, text='Hypocenter Location, Z', font=('calibre', 10, 'bold'))
+        hypocenterZ_entry = tk.Entry(main, textvariable=hypocenter_z, font=('calibre', 10, 'normal'))
+        velocity_label = tk.Label(main, text='Rupture Velocity (m/s)', font=('calibre', 10, 'bold'))
+        velocity_entry = tk.Entry(main, textvariable=rupture_velocity, font=('calibre', 10, 'normal'))
+        time_label = tk.Label(main, text='Source Time Function', font=('calibre', 10, 'bold'))
+        time_entry = tk.OptionMenu(main, source_time, *SourceList)
+        c0 = tk.Checkbutton(main, text='Show Report', variable=boolean0, onvalue=1, offvalue=0)
+        c1 = tk.Checkbutton(main, text='Visualize 2D', variable=boolean1, onvalue=1, offvalue=0)
+        c2 = tk.Checkbutton(main, text='Visualize 3D', variable=boolean2, onvalue=1, offvalue=0)
+        c3 = tk.Checkbutton(main, text='Save File (Ascii List)', variable=boolean3, onvalue=1, offvalue=0)
+        c4 = tk.Checkbutton(main, text='Save File (SW4 format)', variable=boolean4, onvalue=1, offvalue=0)
 
-    # third column
-    hypocenterX_label = tk.Label(main, text='Hypocenter Location, X', font=('calibre', 10, 'bold'))
-    hypocenterX_entry = tk.Entry(main, textvariable=hypocenter_x, font=('calibre', 10, 'normal'))
-    hypocenterY_label = tk.Label(main, text='Hypocenter Location, Y', font=('calibre', 10, 'bold'))
-    hypocenterY_entry = tk.Entry(main, textvariable=hypocenter_y, font=('calibre', 10, 'normal'))
-    hypocenterZ_label = tk.Label(main, text='Hypocenter Location, Z', font=('calibre', 10, 'bold'))
-    hypocenterZ_entry = tk.Entry(main, textvariable=hypocenter_z, font=('calibre', 10, 'normal'))
-    velocity_label = tk.Label(main, text='Rupture Velocity (m/s)', font=('calibre', 10, 'bold'))
-    velocity_entry = tk.Entry(main, textvariable=rupture_velocity, font=('calibre', 10, 'normal'))
-    time_label = tk.Label(main, text='Source Time Function', font=('calibre', 10, 'bold'))
-    time_entry = tk.OptionMenu(main, source_time, *SourceList)
-    c0 = tk.Checkbutton(main, text='Show Report', variable=boolean0, onvalue=1, offvalue=0)
-    c1 = tk.Checkbutton(main, text='Visualize 2D', variable=boolean1, onvalue=1, offvalue=0)
-    c2 = tk.Checkbutton(main, text='Visualize 3D', variable=boolean2, onvalue=1, offvalue=0)
-    c3 = tk.Checkbutton(main, text='Save File (Ascii List)', variable=boolean3, onvalue=1, offvalue=0)
-    c4 = tk.Checkbutton(main, text='Save File (SW4 format)', variable=boolean4, onvalue=1, offvalue=0)
+        # creating a button using the widget
+        # Button that will call the submit function
+        sub_btn = tkm.Button(main, text='Submit', command=submit, fg='white', background='#5EA6F7')
 
+        # placing the label and entry in
+        # the required position using grid
+        # method ( grid for first column)
+        scenario_label.grid(row=0, column=0, sticky='w')
+        scenario_entry.grid(row=0, column=1, sticky='w')
+        earthquake_label.grid(row=1, column=0, sticky='w')
+        earthquake_entry.grid(row=1, column=1, sticky='w')
+        # seismic_label.grid(row=2, column=0)
+        # seismic_entry.grid(row=2, column=1)
 
-    # creating a button using the widget
-    # Button that will call the submit function
-    sub_btn = tkm.Button(main, text='Submit', command=submit, fg='white', background='#5EA6F7')
-    # quit button
-    quit_button = tkm.Button(main, text='Quit', fg='white', background='#E4683C', command=root.quit)
+        # grid for second column
+        rupture_label.grid(row=0, column=2, sticky='w')
+        rupture_entry.grid(row=0, column=3, sticky='w')
+        strike_label.grid(row=1, column=2, sticky='w')
+        strike_entry.grid(row=1, column=3, sticky='w')
+        dip_label.grid(row=2, column=2, sticky='w')
+        dip_entry.grid(row=2, column=3, sticky='w')
+        rake_label.grid(row=3, column=2, sticky='w')
+        rake_entry.grid(row=3, column=3, sticky='w')
+        slipX_label.grid(row=4, column=2, sticky='w' )
+        slipX_entry.grid(row=4, column=3, sticky='w')
+        slipY_label.grid(row=5, column=2, sticky='w')
+        slipY_entry.grid(row=5, column=3, sticky='w')
+        slipZ_label.grid(row=6, column=2, sticky='w')
+        slipZ_entry.grid(row=6, column=3, sticky='w')
+        area_label.grid(row=7, column=2, sticky='w')
+        area_entry.grid(row=7, column=3, sticky='w')
+        ratio_label.grid(row=8, column=2, sticky='w')
+        ratio_entry.grid(row=8, column=3, sticky='w')
 
-    # placing the label and entry in
-    # the required position using grid
-    # method ( grid for first column)
-    scenario_label.grid(row=0, column=0, sticky='w')
-    scenario_entry.grid(row=0, column=1, sticky='w')
-    earthquake_label.grid(row=1, column=0, sticky='w')
-    earthquake_entry.grid(row=1, column=1, sticky='w')
-    # seismic_label.grid(row=2, column=0)
-    # seismic_entry.grid(row=2, column=1)
-
-    # grid for second column
-    rupture_label.grid(row=0, column=2, sticky='w')
-    rupture_entry.grid(row=0, column=3, sticky='w')
-    strike_label.grid(row=1, column=2, sticky='w')
-    strike_entry.grid(row=1, column=3, sticky='w')
-    dip_label.grid(row=2, column=2, sticky='w')
-    dip_entry.grid(row=2, column=3, sticky='w')
-    rake_label.grid(row=3, column=2, sticky='w')
-    rake_entry.grid(row=3, column=3, sticky='w')
-    slipX_label.grid(row=4, column=2, sticky='w' )
-    slipX_entry.grid(row=4, column=3, sticky='w')
-    slipY_label.grid(row=5, column=2, sticky='w')
-    slipY_entry.grid(row=5, column=3, sticky='w')
-    slipZ_label.grid(row=6, column=2, sticky='w')
-    slipZ_entry.grid(row=6, column=3, sticky='w')
-    area_label.grid(row=7, column=2, sticky='w')
-    area_entry.grid(row=7, column=3, sticky='w')
-    ratio_label.grid(row=8, column=2, sticky='w')
-    ratio_entry.grid(row=8, column=3, sticky='w')
-
-    # grid for third column
-    hypocenterX_label.grid(row=0, column=4, sticky='w')
-    hypocenterX_entry.grid(row=0, column=5, sticky='w')
-    hypocenterY_label.grid(row=1, column=4, sticky='w')
-    hypocenterY_entry.grid(row=1, column=5, sticky='w')
-    hypocenterZ_label.grid(row=2, column=4, sticky='w')
-    hypocenterZ_entry.grid(row=2, column=5, sticky='w')
-    velocity_label.grid(row=3, column=4, sticky='w')
-    velocity_entry.grid(row=3, column=5, sticky='w')
-    time_label.grid(row=4, column=4, sticky='w')
-    time_entry.grid(row=4, column=5, sticky='w')
-    c0.grid(row=5, column=4, sticky='w')
-    c1.grid(row=6, column=4, sticky='w')
-    c2.grid(row=7, column=4, sticky='w')
-    c3.grid(row=8, column=4, sticky='w')
-    c4.grid(row=9, column=4, sticky='w')
-    sub_btn.grid(row=10, column=5)
-    quit_button.grid(row=11, column=5)
+        # grid for third column
+        hypocenterX_label.grid(row=0, column=4, sticky='w')
+        hypocenterX_entry.grid(row=0, column=5, sticky='w')
+        hypocenterY_label.grid(row=1, column=4, sticky='w')
+        hypocenterY_entry.grid(row=1, column=5, sticky='w')
+        hypocenterZ_label.grid(row=2, column=4, sticky='w')
+        hypocenterZ_entry.grid(row=2, column=5, sticky='w')
+        velocity_label.grid(row=3, column=4, sticky='w')
+        velocity_entry.grid(row=3, column=5, sticky='w')
+        time_label.grid(row=4, column=4, sticky='w')
+        time_entry.grid(row=4, column=5, sticky='w')
+        c0.grid(row=5, column=4, sticky='w')
+        c1.grid(row=6, column=4, sticky='w')
+        c2.grid(row=7, column=4, sticky='w')
+        c3.grid(row=8, column=4, sticky='w')
+        c4.grid(row=9, column=4, sticky='w')
+        sub_btn.grid(row=10, column=5)
+    elif count > 2:
+        root.destroy()
 
 
 title_label = tk.Label(root, text='Title', font=('calibre', 18, 'bold'))
