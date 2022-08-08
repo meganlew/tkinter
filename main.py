@@ -427,9 +427,9 @@ seismogram_title3 = tk.Label(root, text='-Source-reciever paths are selected thr
 seismogram_title4 = tk.Label(root, text='interface', font=('calibre', 12))
 seismogram_title5 = tk.Label(root, text='-Computes synthetic-observed waveform performance', font=('calibre', 12))
 seismogram_title6 = tk.Label(root, text='metrics', font=('calibre', 12))
-continue_btn = tkm.Button(root, text='Continue', command=submit, fg='white', background='#5EA6F7')
-continue_btn1 = tkm.Button(root, text='Continue', fg='white', background='#5EA6F7')
-continue_btn2 = tkm.Button(root, text='Continue', fg='white', background='#5EA6F7')
+continue_btn = tkm.Button(root, text='Start', command=submit, fg='white', background='#5EA6F7')
+continue_btn1 = tkm.Button(root, text='Start', fg='white', background='#5EA6F7')
+continue_btn2 = tkm.Button(root, text='Start', fg='white', background='#5EA6F7')
 
 
 image = Image.open('./assets/subfaults_mw4.5.png')
@@ -449,7 +449,7 @@ fig_image = ttk.Label(root, image=img2)
 
 title_label.grid(row=0, column=100, sticky='n')
 rupture_title.grid(row=1, column=0, sticky='n')
-subfaults_image.grid(row=2, column=0, sticky='w')
+subfaults_image.grid(row=2, column=0, sticky='n')
 rupture_title1.grid(row=3, column=0, sticky='w')
 rupture_title2.grid(row=4, column=0, sticky='w')
 rupture_title3.grid(row=5, column=0, sticky='w')
