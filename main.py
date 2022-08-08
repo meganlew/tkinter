@@ -3,6 +3,7 @@ import numpy as np
 import tkmacosx as tkm
 from tkinter import ttk
 from tkinter.messagebox import showinfo
+from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
 from finiteSource_functions import ellipseSource
 #import finiteSource_functions    # this runs that code and defines the function
@@ -34,7 +35,7 @@ SourceList = [
 
 root = tk.Tk()
 root.title("Welcome")
-root.geometry("900x400")
+root.geometry("950x600")
 
 # variables in the first column
 scenario_name = tk.StringVar()  # scenario name (str)
@@ -250,7 +251,7 @@ def submit():
     # print("Source Time Function: " + time)
 
     scenario_name.set("")
-    earthquake_mag.set(1.2)
+    earthquake_mag.set(4.5)
     fault_rupture.set("")
     # seismic_moment.set(1.2)
     strike_degrees.set(0.0)
@@ -408,13 +409,68 @@ def submit():
     quit_button.grid(row=11, column=5)
 
 
-title_label = tk.Label(root, text='Title', font=('calibre', 18, 'bold'))
-instructions_label = tk.Label(root, text='Instructions', font=('calibre', 18, 'bold'))
+title_label = tk.Label(root, text='Earthquake Modeling Tools', font=('calibre', 18))
+rupture_title = tk.Label(root, text='Rupture Generator', font=('calibre', 18))
+rupture_title1 = tk.Label(root, text='-Creates a set of subfaults with individual rupture', font=('calibre', 12))
+rupture_title2 = tk.Label(root, text='attributes based on user input.', font=('calibre', 12))
+rupture_title3 = tk.Label(root, text='-Visualizes in 2D and 3D', font=('calibre', 12))
+rupture_title4 = tk.Label(root, text='-Writes out subfaults attributes in different formats', font=('calibre', 12))
+geology_title = tk.Label(root, text='Geology Builder', font=('calibre', 18))
+geology_title1 = tk.Label(root, text='-Builds simple geologic structures and assigns', font=('calibre', 12))
+geology_title2 = tk.Label(root, text='attributes (e.g seismic velocity, density)', font=('calibre', 12))
+geology_title3 = tk.Label(root, text='-User defines structure type (e.g bimaterial fault,', font=('calibre', 12))
+geology_title4 = tk.Label(root, text='basin, stratigraphy) and can assign properties', font=('calibre', 12))
+seismogram_title = tk.Label(root, text='Seismogram Viewer', font=('calibre', 18))
+seismogram_title1 = tk.Label(root, text='-Displays seismograms for different combinations of seismic', font=('calibre', 12))
+seismogram_title2 = tk.Label(root, text='sources and recievers', font=('calibre', 12))
+seismogram_title3 = tk.Label(root, text='-Source-reciever paths are selected through clickable map', font=('calibre', 12))
+seismogram_title4 = tk.Label(root, text='interface', font=('calibre', 12))
+seismogram_title5 = tk.Label(root, text='-Computes synthetic-observed waveform performance', font=('calibre', 12))
+seismogram_title6 = tk.Label(root, text='metrics', font=('calibre', 12))
 continue_btn = tkm.Button(root, text='Continue', command=submit, fg='white', background='#5EA6F7')
+continue_btn1 = tkm.Button(root, text='Continue', fg='white', background='#5EA6F7')
+continue_btn2 = tkm.Button(root, text='Continue', fg='white', background='#5EA6F7')
 
-title_label.grid(row=0, column=0, sticky='w')
-instructions_label.grid(row=1, column=0, sticky='w')
-continue_btn.grid(row=10, column=5)
+
+image = Image.open('./assets/subfaults_mw4.5.png')
+resize_image = image.resize((250, 200))
+img = ImageTk.PhotoImage(resize_image)
+subfaults_image = ttk.Label(root, image=img)
+
+image1 = Image.open('./assets/hill.png')
+resize_image1 = image1.resize((250, 200))
+img1 = ImageTk.PhotoImage(resize_image1)
+hill_image = ttk.Label(root, image=img1)
+
+image2 = Image.open('./assets/Fig5_Jan2022.png')
+resize_image2 = image2.resize((250, 200))
+img2 = ImageTk.PhotoImage(resize_image2)
+fig_image = ttk.Label(root, image=img2)
+
+title_label.grid(row=0, column=100, sticky='n')
+rupture_title.grid(row=1, column=0, sticky='n')
+subfaults_image.grid(row=2, column=0, sticky='w')
+rupture_title1.grid(row=3, column=0, sticky='w')
+rupture_title2.grid(row=4, column=0, sticky='w')
+rupture_title3.grid(row=5, column=0, sticky='w')
+rupture_title4.grid(row=6, column=0, sticky='w')
+geology_title.grid(row=1, column=100)
+hill_image.grid(row=2, column=100)
+geology_title1.grid(row=3, column=100)
+geology_title2.grid(row=4, column=100)
+geology_title3.grid(row=5, column=100)
+geology_title4.grid(row=6, column=100)
+seismogram_title.grid(row=1, column=200, sticky='n')
+fig_image.grid(row=2, column=200)
+seismogram_title1.grid(row=3, column=200, sticky='w')
+seismogram_title2.grid(row=4, column=200, sticky='w')
+seismogram_title3.grid(row=5, column=200, sticky='w')
+seismogram_title4.grid(row=6, column=200, sticky='w')
+seismogram_title5.grid(row=7, column=200, sticky='w')
+seismogram_title6.grid(row=8, column=200, sticky='w')
+continue_btn.grid(row=10, column=0)
+continue_btn1.grid(row=10, column=100)
+continue_btn2.grid(row=10, column=200)
 # performing an infinite loop
 # for the window to display
 root.mainloop()
