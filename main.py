@@ -352,7 +352,6 @@ def submit():
     c3 = tk.Checkbutton(main, text='Save File (Ascii List)', variable=boolean3, onvalue=1, offvalue=0)
     c4 = tk.Checkbutton(main, text='Save File (SW4 format)', variable=boolean4, onvalue=1, offvalue=0)
 
-
     # creating a button using the widget
     # Button that will call the submit function
     sub_btn = tkm.Button(main, text='Submit', command=submit, fg='white', background='#5EA6F7')
