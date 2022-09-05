@@ -92,36 +92,6 @@ class Win2:
         self.root.geometry("900x400")
         self.root.title("Rupture Generator")
 
-        # first column
-        scenario = scenario_name.get()
-        Mw = earthquake_mag.get()
-        # M0 = seismic_moment.get()
-
-        # second column
-        rupture = fault_rupture.get()
-        strike = strike_degrees.get()
-        dip = dip_degrees.get()
-        rake = rake_degrees.get()
-        centroidX = centroid_x.get()
-        centroidY = centroid_y.get()
-        centroidZ = centroid_z.get()
-        area = rupture_area.get()
-        aspectRatio = aspect_ratio.get()
-
-        # third column
-        hypoX = hypocenter_x.get()
-        hypoY = hypocenter_y.get()
-        hypoZ = hypocenter_z.get()
-        velocity = rupture_velocity.get()
-        time = source_time.get()
-        bool0 = boolean0.get()
-        bool1 = boolean1.get()
-        bool2 = boolean2.get()
-        bool3 = boolean3.get()
-        bool4 = boolean4.get()
-
-        ellipseSource(Mw, strike, bool1, bool2, bool3, bool4)
-
         scenario_name.set("")
         earthquake_mag.set(4.5)
         fault_rupture.set("")
@@ -232,7 +202,7 @@ class Win2:
 
         self.start_button = tkm.Button(self.root, text="Submit", fg='white', background='#0089DB',
                                        activebackground='#5EA6F7',
-                                       command=lambda: self.new_window1(Win3)).grid(row=10, column=5)
+                                       command=lambda: setup_rupture()).grid(row=10, column=5)
 
     def new_window1(self, _class):
         try:
@@ -242,7 +212,116 @@ class Win2:
             self.new = tk.Toplevel(self.root)
             _class(self.new)
 
-class Win3:
+
+def setup_rupture():
+        scenario = scenario_name.get()
+        Mw = earthquake_mag.get()
+
+        rupture = fault_rupture.get()
+        strike = strike_degrees.get()
+        dip = dip_degrees.get()
+        rake = rake_degrees.get()
+        centroidX = centroid_x.get()
+        centroidY = centroid_y.get()
+        centroidZ = centroid_z.get()
+        area = rupture_area.get()
+        aspectRatio = aspect_ratio.get()
+
+        hypoX = hypocenter_x.get()
+        hypoY = hypocenter_y.get()
+        hypoZ = hypocenter_z.get()
+        velocity = rupture_velocity.get()
+        time = source_time.get()
+        bool0 = boolean0.get()
+        bool1 = boolean1.get()
+        bool2 = boolean2.get()
+        bool3 = boolean3.get()
+        bool4 = boolean4.get()
+
+        ellipseSource(Mw, bool1, bool2, bool3, bool4)
+
+        if bool0:
+            window = tk.Toplevel(root)
+            window.geometry("900x400")
+            window.title("Rupture Generator Results")
+            # labels for first column
+            scenario_text = tk.Label(window, text='Scenario Name', font=('calibre', 12, 'bold'), anchor='w')
+            text_scenario = tk.Label(window, text=scenario, font=('calibre', 12), anchor='w')
+            earthquake_text = tk.Label(window, text='Earthquake Magnitude', font=('calibre', 12, 'bold'))
+            text_earthquake = tk.Label(window, text=Mw, font=('calibre', 12))
+            # seismic_text = tk.Label(window, text='Seismic Moment', font=('calibre', 12, 'bold'))
+            # text_seismic = tk.Label(window, text=M0, font=('calibre', 12))
+            # labels for the second column
+            rupture_text = tk.Label(window, text='Fault Rupture Type', font=('calibre', 12, 'bold'))
+            text_rupture = tk.Label(window, text=rupture, font=('calibre', 12))
+            strike_text = tk.Label(window, text='Strike (degrees) ', font=('calibre', 12, 'bold'))
+            text_strike = tk.Label(window, text=strike, font=('calibre', 12))
+            dip_text = tk.Label(window, text='Dip (degrees)', font=('calibre', 12, 'bold'))
+            text_dip = tk.Label(window, text=dip, font=('calibre', 12))
+            rake_text = tk.Label(window, text='Rake (degrees)', font=('calibre', 12, 'bold'))
+            text_rake = tk.Label(window, text=rake, font=('calibre', 12))
+            slipX_text = tk.Label(window, text='Slip Centroid, X', font=('calibre', 12, 'bold'))
+            text_slipX = tk.Label(window, text=centroidX, font=('calibre', 12))
+            slipY_text = tk.Label(window, text='Slip Centroid, Y', font=('calibre', 12, 'bold'))
+            text_slipY = tk.Label(window, text=centroidY, font=('calibre', 12))
+            slipZ_text = tk.Label(window, text='Slip Centroid, X', font=('calibre', 12, 'bold'))
+            text_slipZ = tk.Label(window, text=centroidZ, font=('calibre', 12))
+            area_text = tk.Label(window, text='Rupture Area Shape', font=('calibre', 12, 'bold'))
+            text_area = tk.Label(window, text=area, font=('calibre', 12))
+            ratio_text = tk.Label(window, text='Rupture Area Shape', font=('calibre', 12, 'bold'))
+            text_ratio = tk.Label(window, text=aspectRatio, font=('calibre', 12))
+            # labels for third column
+            hypocenterX_text = tk.Label(window, text='Hypocenter location, X', font=('calibre', 12, 'bold'))
+            text_hypocenterX = tk.Label(window, text=hypoX, font=('calibre', 12))
+            hypocenterY_text = tk.Label(window, text='Hypocenter location, Y', font=('calibre', 12, 'bold'))
+            text_hypocenterY = tk.Label(window, text=hypoY, font=('calibre', 12))
+            hypocenterZ_text = tk.Label(window, text='Hypocenter location, Z', font=('calibre', 12, 'bold'))
+            text_hypocenterZ = tk.Label(window, text=hypoZ, font=('calibre', 12))
+            velocity_text = tk.Label(window, text='Rupture Velocity (m/s)', font=('calibre', 12, 'bold'))
+            text_velocity = tk.Label(window, text=velocity, font=('calibre', 12))
+            time_text = tk.Label(window, text='Source Time Function', font=('calibre', 12, 'bold'))
+            text_time = tk.Label(window, text=time, font=('calibre', 12))
+
+            # grid to display first column of inputs received from user
+            scenario_text.grid(row=0, column=0)
+            text_scenario.grid(row=0, column=1)
+            earthquake_text.grid(row=1, column=0)
+            text_earthquake.grid(row=1, column=1)
+            # seismic_text.grid(row=2, column=0)
+            # text_seismic.grid(row=2, column=1)
+            # second column grid
+            rupture_text.grid(row=0, column=2)
+            text_rupture.grid(row=0, column=3)
+            strike_text.grid(row=1, column=2)
+            text_strike.grid(row=1, column=3)
+            dip_text.grid(row=2, column=2)
+            text_dip.grid(row=2, column=3)
+            rake_text.grid(row=3, column=2)
+            text_rake.grid(row=3, column=3)
+            slipX_text.grid(row=4, column=2)
+            text_slipX.grid(row=4, column=3)
+            slipY_text.grid(row=5, column=2)
+            text_slipY.grid(row=5, column=3)
+            slipZ_text.grid(row=6, column=2)
+            text_slipZ.grid(row=6, column=3)
+            area_text.grid(row=7, column=2)
+            text_area.grid(row=7, column=3)
+            ratio_text.grid(row=8, column=2)
+            text_ratio.grid(row=8, column=3)
+            # third column grid
+            hypocenterX_text.grid(row=0, column=4)
+            text_hypocenterX.grid(row=0, column=5)
+            hypocenterY_text.grid(row=1, column=4)
+            text_hypocenterY.grid(row=1, column=5)
+            hypocenterZ_text.grid(row=2, column=4)
+            text_hypocenterZ.grid(row=2, column=5)
+            velocity_text.grid(row=3, column=4)
+            text_velocity.grid(row=3, column=5)
+            time_text.grid(row=4, column=4)
+            text_time.grid(row=4, column=5)
+
+
+class Win3():
     def __init__(self, root):
         print(app.new.state())
         self.root = root
@@ -250,7 +329,6 @@ class Win3:
         self.root.title("Rupture Generator Results")
         text_label = tk.Label(self.root, text='text', font=('calibre', 20, 'bold'))
         text_label.grid(row=0, column=1)
-
 
 
 if __name__ == "__main__":
