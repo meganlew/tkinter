@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 import numpy as np
 import matplotlib.pyplot as plt
 from finiteSource_functions import ellipseSource
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
 from matplotlib.animation import FuncAnimation
 
@@ -250,6 +250,10 @@ def setup_rupture():
             canvas = FigureCanvasTkAgg(fig, master=window)
             plot_widget = canvas.get_tk_widget()
             plot_widget.grid(row=9, column=7)
+            toolbarFrame = tk.Frame(master=window)
+            toolbarFrame.grid(row=10, column=7)
+            toolbar = NavigationToolbar2Tk(canvas, toolbarFrame)
+
             # labels for first column
             scenario_text = tk.Label(window, text='Scenario Name', font=('calibre', 12, 'bold'), anchor='w')
             text_scenario = tk.Label(window, text=scenario, font=('calibre', 12), anchor='w')
@@ -326,7 +330,6 @@ def setup_rupture():
             time_text.grid(row=4, column=4)
             text_time.grid(row=4, column=5)
 
-
 class Win3():
     def __init__(self, root):
         print(app.new.state())
@@ -342,6 +345,8 @@ if __name__ == "__main__":
     app = Win(root)
     fig = Figure(dpi=50)
     fig, ax = plt.subplots()
+
+
 
     #  Fault Rupture Type, Dropdown menu options
     RuptureList = [
