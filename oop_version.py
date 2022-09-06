@@ -5,6 +5,9 @@ from PIL import Image, ImageTk
 import numpy as np
 import matplotlib.pyplot as plt
 from finiteSource_functions import ellipseSource
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+from matplotlib.animation import FuncAnimation
 
 class Win:
     def __init__(self, root):
@@ -242,8 +245,11 @@ def setup_rupture():
 
         if bool0:
             window = tk.Toplevel(root)
-            window.geometry("900x400")
+            window.geometry("2000x2000")
             window.title("Rupture Generator Results")
+            canvas = FigureCanvasTkAgg(fig, master=window)
+            plot_widget = canvas.get_tk_widget()
+            plot_widget.grid(row=9, column=7)
             # labels for first column
             scenario_text = tk.Label(window, text='Scenario Name', font=('calibre', 12, 'bold'), anchor='w')
             text_scenario = tk.Label(window, text=scenario, font=('calibre', 12), anchor='w')
@@ -334,6 +340,8 @@ class Win3():
 if __name__ == "__main__":
     root = tk.Tk()
     app = Win(root)
+    fig = Figure(dpi=50)
+    fig, ax = plt.subplots()
 
     #  Fault Rupture Type, Dropdown menu options
     RuptureList = [
