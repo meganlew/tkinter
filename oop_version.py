@@ -39,6 +39,7 @@ class Win:
         self.img = ImageTk.PhotoImage(self.resize_image)
         subfaults_image = ttk.Label(self.root, image=self.img)
 
+
         self.image1 = Image.open('./assets/hill.png')
         self.resize_image1 = self.image1.resize((250, 200))
         self.img1 = ImageTk.PhotoImage(self.resize_image1)
@@ -72,12 +73,12 @@ class Win:
         seismogram_title6.grid(row=8, column=200, sticky='w')
         self.start_button = tkm.Button(self.root, text="Start",fg='white', background='#0089DB', activebackground='#5EA6F7',
                                        command=lambda: self.new_window(Win2)).grid(row=10, column=0)
-        start_button1 = tkm.Button(self.root, text="Start", fg='white', background='#0089DB',
-                                       activebackground='#5EA6F7')
-        start_button1.grid(row=10, column=100)
-        start_button2 = tkm.Button(self.root, text="Start", fg='white', background='#0089DB',
-                                       activebackground='#5EA6F7')
-        start_button2.grid(row=10, column=200)
+        self.start_button1 = tkm.Button(self.root, text="Start", fg='white', background='#0089DB',
+                                       activebackground='#5EA6F7',
+                                       command=lambda: self.new_window(Win3)).grid(row=10, column=100)
+        self.start_button2 = tkm.Button(self.root, text="Start", fg='white', background='#0089DB',
+                                       activebackground='#5EA6F7',
+                                       command=lambda: self.new_window(Win4)).grid(row=10, column=200)
 
 
     def new_window(self, _class):
@@ -233,7 +234,7 @@ def setup_rupture():
         hypoX = hypocenter_x.get()
         hypoY = hypocenter_y.get()
         hypoZ = hypocenter_z.get()
-        velocity = rupture_velocity.get()
+        vrup = rupture_velocity.get()
         time = source_time.get()
         bool0 = boolean0.get()
         bool1 = boolean1.get()
@@ -241,7 +242,8 @@ def setup_rupture():
         bool3 = boolean3.get()
         bool4 = boolean4.get()
 
-        ellipseSource(Mw, bool1, bool2, bool3, bool4)
+        ellipseSource(Mw, strike, dip, rake, centroidX, centroidY, centroidZ, aspectRatio, hypoX, hypoY, hypoZ, vrup,
+                      bool1, bool2, bool3, bool4)
 
         if bool0:
             window = tk.Toplevel(root)
@@ -250,6 +252,14 @@ def setup_rupture():
             canvas = FigureCanvasTkAgg(fig, master=window)
             plot_widget = canvas.get_tk_widget()
             plot_widget.grid(row=9, column=7)
+            # plot_widget.figure(figsize=(1, 1))
+            # fig = Figure(dpi=50)
+
+            # frame2 = tk.Frame(window)
+            # canvas2 = FigureCanvasTkAgg(fig, master=window)
+            # plot_widget2 = canvas2.get_tk_widget()
+            # plot_widget2.grid(row=8, column=7)
+
             toolbarFrame = tk.Frame(master=window)
             toolbarFrame.grid(row=10, column=7)
             toolbar = NavigationToolbar2Tk(canvas, toolbarFrame)
@@ -288,7 +298,7 @@ def setup_rupture():
             hypocenterZ_text = tk.Label(window, text='Hypocenter location, Z', font=('calibre', 12, 'bold'))
             text_hypocenterZ = tk.Label(window, text=hypoZ, font=('calibre', 12))
             velocity_text = tk.Label(window, text='Rupture Velocity (m/s)', font=('calibre', 12, 'bold'))
-            text_velocity = tk.Label(window, text=velocity, font=('calibre', 12))
+            text_velocity = tk.Label(window, text=vrup, font=('calibre', 12))
             time_text = tk.Label(window, text='Source Time Function', font=('calibre', 12, 'bold'))
             text_time = tk.Label(window, text=time, font=('calibre', 12))
 
@@ -330,22 +340,33 @@ def setup_rupture():
             time_text.grid(row=4, column=4)
             text_time.grid(row=4, column=5)
 
+# geology builder
 class Win3():
     def __init__(self, root):
         print(app.new.state())
         self.root = root
         self.root.geometry("900x400")
-        self.root.title("Rupture Generator Results")
-        text_label = tk.Label(self.root, text='text', font=('calibre', 20, 'bold'))
+        self.root.title("Geology Builder")
+        text_label = tk.Label(self.root, text='Coming Soon', font=('calibre', 20, 'bold'))
+        text_label.grid(row=0, column=1)
+
+# seismogram viewer
+class Win4():
+    def __init__(self, root):
+        print(app.new.state())
+        self.root = root
+        self.root.geometry("900x400")
+        self.root.title("Seismogram Viewer")
+        text_label = tk.Label(self.root, text='Coming Soon', font=('calibre', 20, 'bold'))
         text_label.grid(row=0, column=1)
 
 
 if __name__ == "__main__":
     root = tk.Tk()
     app = Win(root)
-    fig = Figure(dpi=50)
+    # fig = Figure(dpi=50)
     fig, ax = plt.subplots()
-
+    # fig, axs = plt.subplots(2)
 
 
     #  Fault Rupture Type, Dropdown menu options
