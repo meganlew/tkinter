@@ -9,24 +9,18 @@ from mpl_toolkits.mplot3d import Axes3D
 from scipy import integrate
 
 def ellipseSource(Mw, \
+				  strike,dip,rake, \
+				  centroidX,centroidY,centroidZ, \
+				  aspectRatio, \
+				  hypoX,hypoY,hypoZ, \
+				  vrup, \
 				  visualize2D, \
 				  visualize3D, \
 				  writeFileAscii, \
-				  writeFileSW4, \
-				  vrup=3000.0):
+				  writeFileSW4):
 
 
 	# should get these from GUI eventually
-	strike = 0.0
-	dip = 90.0
-	rake = 180.0
-	centroidX = 0.0
-	centroidY = 0.0
-	centroidZ = -10000.0
-	aspectRatio = 2.0
-	#vrup = 3000.0
-	hypoX = 0.0
-	hypoZ = -10000.0
 	dx = 50
 
 
@@ -56,7 +50,10 @@ def ellipseSource(Mw, \
 
 	xxx = np.reshape(XX, (nx * nz))
 	zzz = np.reshape(ZZ, (nx * nz))
+
 	nsp = len(zzz)
+
+
 
 	###evaluate ellipse function, which == 1 on the ellipse, < 1 inside, >1 outside
 	ellps = ((xxx - centroidX) / ellA) ** 2 + ((zzz - centroidZ) / ellB) ** 2
@@ -129,7 +126,7 @@ def ellipseSource(Mw, \
 		ax00 = plt.subplot2grid((2,2),(0,0))
 		ax01 = plt.subplot2grid((2,2),(0,1))
 		ax10 = plt.subplot2grid((2,2),(1,0))
-		#ax11 = plt.subplot2grid((2,2),(1,1))        
+		#ax11 = plt.subplot2grid((2,2),(1,1))
 		ax00.imshow(m0Fault2d,origin='lower',extent=(xx[0],xx[-1],zz[0],zz[-1]),cmap='inferno')
 		ax01.imshow(dSigFault2d,origin='lower',extent=(xx[0],xx[-1],zz[0],zz[-1]),cmap='Oranges')
 		ax10.imshow(trup2d,origin='lower',extent=(xx[0],xx[-1],zz[0],zz[-1]),cmap='viridis')
@@ -146,10 +143,25 @@ def ellipseSource(Mw, \
 			for iz in np.arange(0,nz,2):
 				if slip02d[iz,ix]==0:
 					continue
+
+				subfaultx = XX[iz,ix]    #rotate dip first, then strike
+				subfaulty = (ZZ[iz,ix]-centroidZ)*np.cos(dip*np.pi/180.0)
+				subfaultz = (ZZ[iz,ix]-centroidZ)*np.sin(dip*np.pi/180.0)
+
+				subfaultxp = subfaultx*np.cos(strike*np.pi/180.0) + subfaulty*np.sin(strike*np.pi/180.0)
+				subfaultyp = -subfaultx*np.sin(strike*np.pi/180.0) + subfaulty*np.cos(strike*np.pi/180.0)
+
+				subfaultxp = subfaultxp + centroidX
+				subfaultyp = subfaultyp + centroidY
+				subfaultzp = subfaultz + centroidZ
+
 				icolorm0 = int(255*(m0Fault2d[iz,ix]-minm0)/(maxm0-minm0))
 				icolorm0 = np.min((icolorm0,255))
 				icolorm0 = np.max((icolorm0,0))
-				ax3d.scatter(XX[iz,ix],0,ZZ[iz,ix],'o',color=cmapGreys[icolorm0,:])
+				ax3d.scatter(subfaultxp,subfaultyp,subfaultzp,'o',color=cmapGreys[icolorm0,:])
+		ax3d.set_xlim((-1.2*ellA+centroidY,1.2*ellA+centroidY))
+		ax3d.set_ylim((-1.2*ellA+centroidX,1.2*ellA+centroidX))
+		ax3d.set_zlim((-1.2*ellA+centroidZ,1.2*ellA+centroidZ))
 		plt.show()
 
 
@@ -172,11 +184,21 @@ def ellipseSource(Mw, \
 					continue
 				subfaultM0 = m0Fault2d[iz,ix]
 				subfaultfc = src.M0tofc(subfaultM0,dSig=dSigFault2d[iz,ix])
-				subfaultx = XX[iz,ix]
-				subfaultz = ZZ[iz,ix]
+
+				subfaultx = XX[iz,ix]    #rotate dip first, then strike
+				subfaulty = (ZZ[iz,ix]-centroidZ)*np.cos(dip*np.pi/180.0)
+				subfaultz = (ZZ[iz,ix]-centroidZ)*np.sin(dip*np.pi/180.0)
+
+				subfaultxp = subfaultx*np.cos(strike*np.pi/180.0) + subfaulty*np.sin(strike*np.pi/180.0)
+				subfaultyp = -subfaultx*np.sin(strike*np.pi/180.0) + subfaulty*np.cos(strike*np.pi/180.0)
+
+				subfaultxp = subfaultxp + centroidX
+				subfaultyp = subfaultyp + centroidY
+				subfaultzp = subfaultz + centroidZ
+
 				subfaulttrup = trup2d[iz,ix]
-				string0 = 'source x=' + '{:.4f}'.format(subfaultx) + \
-						  ' y=' + '{:.4f}'.format(0) + ' z=' + '{:.4f}'.format(subfaultz) + \
+				string0 = 'source x=' + '{:.4f}'.format(subfaultxp) + \
+						  ' y=' + '{:.4f}'.format(subfaultyp) + ' z=' + '{:.4f}'.format(subfaultzp) + \
 						  ' m0=' + '{:.4e}'.format(subfaultM0) + ' strike=' + '{:.2f}'.format(strike) + \
 						  ' dip=' + '{:.2f}'.format(dip) + ' rake=' + '{:.2f}'.format(rake) + \
 						  ' type=Triangle freq=' + '{:.4f}'.format(subfaultfc) + ' t0=' + '{:.4f}'.format(subfaulttrup)
@@ -185,7 +207,37 @@ def ellipseSource(Mw, \
 
 
 
-#ellipseSource(4.5,True,True,True,True)
+
+#uncomment for debugging
+"""
+Mw = 4.5
+strike = 145
+dip = 60
+rake = 180
+centroidX = 0.0
+centroidY = 0.0
+centroidZ = -10000.0
+aspectRatio = 2.0
+hypoX = 0.0
+hypoY = 0.0
+hypoZ = -10000.0
+vrup = 3000.0
+visualize2D = False
+visualize3D = True
+writeFileAscii = False
+writeFileSW4 = False
+ellipseSource(Mw, \
+                        strike,dip,rake, \
+                        centroidX,centroidY,centroidZ,\
+                        aspectRatio,\
+                        hypoX,hypoY,hypoZ,\
+                        vrup,\
+                        visualize2D, \
+                        visualize3D, \
+                        writeFileAscii, \
+                        writeFileSW4)
+"""
+
 
 
 
