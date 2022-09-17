@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import tkmacosx as tkm
 from PIL import Image, ImageTk
 import numpy as np
@@ -79,7 +79,12 @@ class Win:
         self.start_button2 = tkm.Button(self.root, text="Start", fg='white', background='#0089DB',
                                        activebackground='#5EA6F7',
                                        command=lambda: self.new_window(Win4)).grid(row=10, column=200)
+        self.root.protocol("WM_DELETE_WINDOW", self.on_exit)
 
+    def on_exit(self):
+        """When you click to exit, this function is called"""
+        if messagebox.askyesno("Exit", "Do you want to quit the Welcome window?"):
+            self.root.quit()
 
     def new_window(self, _class):
         try:
@@ -88,6 +93,7 @@ class Win:
         except:
             self.new = tk.Toplevel(self.root)
             _class(self.new)
+
 
 class Win2:
     def __init__(self, root):
@@ -153,6 +159,8 @@ class Win2:
         velocity_entry = tk.Entry(self.root, textvariable=rupture_velocity, font=('calibre', 10, 'normal'))
         time_label = tk.Label(self.root, text='Source Time Function', font=('calibre', 10, 'bold'))
         time_entry = tk.OptionMenu(self.root, source_time, *SourceList)
+        filenameTXT_entry = tk.Entry(self.root, textvariable=filenameTXT, font=('calibre', 10, 'normal'))
+        filenameSW4_entry = tk.Entry(self.root, textvariable=filenameSW4, font=('calibre', 10, 'normal'))
         c0 = tk.Checkbutton(self.root, text='Show Report', variable=boolean0, onvalue=1, offvalue=0)
         c1 = tk.Checkbutton(self.root, text='Visualize 2D', variable=boolean1, onvalue=1, offvalue=0)
         c2 = tk.Checkbutton(self.root, text='Visualize 3D', variable=boolean2, onvalue=1, offvalue=0)
@@ -203,6 +211,8 @@ class Win2:
         c2.grid(row=7, column=4, sticky='w')
         c3.grid(row=8, column=4, sticky='w')
         c4.grid(row=9, column=4, sticky='w')
+        filenameTXT_entry.grid(row=8, column=5)
+        filenameSW4_entry.grid(row=9, column=5)
 
         self.start_button = tkm.Button(self.root, text="Submit", fg='white', background='#0089DB',
                                        activebackground='#5EA6F7',
@@ -243,7 +253,7 @@ def setup_rupture():
         bool4 = boolean4.get()
 
         ellipseSource(Mw, strike, dip, rake, centroidX, centroidY, centroidZ, aspectRatio, hypoX, hypoY, hypoZ, vrup,
-                      bool1, bool2, bool3, bool4)
+                      bool1, bool2, bool3, bool4, filenameTXT, filenameSW4)
 
         if bool0:
             window = tk.Toplevel(root)
@@ -414,6 +424,10 @@ if __name__ == "__main__":
     hypocenter_z = tk.DoubleVar()  # hypocenter location, z (float)
     rupture_velocity = tk.DoubleVar()  # rupture velocity(m/s) (float)
     source_time = tk.StringVar()  # source time function (menu)
+    filenameTXT = tk.StringVar()
+    filenameTXT.set("subfaults.txt")
+    filenameSW4 = tk.StringVar()
+    filenameSW4.set("subfaults.sw4in")
     boolean0 = tk.BooleanVar()
     boolean1 = tk.BooleanVar()
     boolean2 = tk.BooleanVar()

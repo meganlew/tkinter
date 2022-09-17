@@ -17,7 +17,9 @@ def ellipseSource(Mw, \
 				  visualize2D, \
 				  visualize3D, \
 				  writeFileAscii, \
-				  writeFileSW4):
+				  writeFileSW4, \
+				  filenameTXT, \
+				  filenameSW4):
 
 
 	# should get these from GUI eventually
