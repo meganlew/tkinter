@@ -18,8 +18,8 @@ def ellipseSource(Mw, \
 				  visualize3D, \
 				  writeFileAscii, \
 				  writeFileSW4, \
-				  filenameTXT, \
-				  filenameSW4):
+				  fileTXT, \
+				  fileSW4):
 
 
 	# should get these from GUI eventually
@@ -179,7 +179,7 @@ def ellipseSource(Mw, \
 
 	##write file in format for SW4 input
 	if writeFileSW4 == True:
-		f = open('subfaultsSW4.txt','w')
+		f = open(fileSW4,'w')
 		for ix in np.arange(0,nx,2):
 			for iz in np.arange(0,nz,2):
 				if slip02d[iz,ix]==0:

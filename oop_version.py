@@ -109,6 +109,10 @@ class Win2:
         strike_degrees.set(0.0)
         dip_degrees.set(90.0)
         rake_degrees.set(180.0)
+        aspect_ratio.set(1.0)
+        centroid_z.set(-10000.0)
+        hypocenter_z.set(-10000.0)
+        rupture_velocity.set(2500.0)
 
         # label, entry, menu ( first column )
         # creating a label for fault name
@@ -251,9 +255,11 @@ def setup_rupture():
         bool2 = boolean2.get()
         bool3 = boolean3.get()
         bool4 = boolean4.get()
+        fileTXT = filenameTXT.get()
+        fileSW4 = filenameSW4.get()
 
         ellipseSource(Mw, strike, dip, rake, centroidX, centroidY, centroidZ, aspectRatio, hypoX, hypoY, hypoZ, vrup,
-                      bool1, bool2, bool3, bool4, filenameTXT, filenameSW4)
+                      bool1, bool2, bool3, bool4, fileTXT, fileSW4)
 
         if bool0:
             window = tk.Toplevel(root)
