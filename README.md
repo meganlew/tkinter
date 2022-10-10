@@ -8,6 +8,7 @@ pip install matplotlib
 pip install pillow
 
 ```
+![tab](https://user-images.githubusercontent.com/40639118/194946866-1ea79640-350b-4f4d-8717-954b28db51b9.gif)
 
 <img src="https://user-images.githubusercontent.com/40639118/183348972-1182f8ca-e204-44f8-958b-c0d19a613dd5.png" width="700" height="450" />
 
