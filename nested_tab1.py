@@ -7,17 +7,17 @@ root = tk.Tk()
 tab = ttk.Notebook(root) #Create the notebook
 tab.pack()
 
-rupture = 'Rupture Generator' #concatenate term name
+rupture = 'Rupture Generator' #concatenate name
 ruptureFrame = ttk.Frame(tab)   #create frame widget to go in program nb
 tab.add(ruptureFrame, text=rupture)# add the newly created frame widget to the notebook
 
 
-geology = 'Geology Builder' #concatenate term name
+geology = 'Geology Builder' #concatenate name
 geologyFrame = ttk.Frame(tab)   #create frame widget to go in program nb
 tab.add(geologyFrame, text=geology)# add the newly created frame widget to the notebook
 
 
-seismogram = 'Seismogram Builder' #concatenate term name
+seismogram = 'Seismogram Builder' #concatenate name
 seismogramFrame = ttk.Frame(tab)   #create frame widget to go in program nb
 tab.add(seismogramFrame, text=seismogram)# add the newly created frame widget to the notebook
 
@@ -26,11 +26,11 @@ nbName.pack()#pack the notebook
 
 
 layeredModel = "Layered Model"#concatenate name
-layered = ttk.Frame(nbName) #Create a  frame for the newly created term frame
+layered = ttk.Frame(nbName) #Create a  frame for the newly created frame
 nbName.add(layered, text=layeredModel)#add the frame to the new notebook
 
 basinModel = "Basin Model"  # concatenate name
-basin = ttk.Frame(nbName)  # Create a frame for the newly created term frame
+basin = ttk.Frame(nbName)  # Create a frame for the newly created frame
 nbName.add(basin, text=basinModel)  # add the frame to the new notebook
 
 root.mainloop()
